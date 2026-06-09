@@ -1,0 +1,78 @@
+<!-- components/baby-status-bar/index.wxml -->
+<view class="bs-panel">
+  <!-- 头像 + 信息 -->
+  <view class="bs-top">
+    <view class="bs-baby-entry" bindtap="onBabyTap">
+      <view class="bs-avatar">
+        <image wx:if="{{baby.avatar}}" class="bs-avatar-img" src="{{baby.avatar}}" mode="aspectFill" />
+        <view wx:else class="bs-avatar-text">{{baby.avatarText}}</view>
+      </view>
+      <view class="bs-meta">
+        <view class="bs-name">{{baby.name || '添加宝宝'}}</view>
+        <view class="bs-age">{{baby.age || '点击切换宝宝'}}</view>
+      </view>
+    </view>
+    <view class="bs-action-group">
+      <view class="bs-action-entry stats" bindtap="onStatsTap">
+        <view class="bs-action-icon">📊</view>
+        <view class="bs-action-text">统计</view>
+      </view>
+      <view class="bs-action-entry sign" bindtap="onSignInTap">
+        <view class="bs-action-icon">✓</view>
+        <view class="bs-action-text">签到</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="bs-stats">
+    <view class="bs-stat-col">
+      <view class="bs-mini-card feed">
+        <text class="bs-mini-icon">🍼</text>
+        <view class="bs-mini-body">
+          <text class="bs-mini-label">距上次喂奶</text>
+          <view class="bs-mini-values">
+            <text class="bs-mini-main">{{stats.timeSinceLastFeed}}</text>
+            <text class="bs-mini-sub" wx:if="{{stats.feedCount}}">{{stats.feedCount}}次</text>
+            <text class="bs-mini-sub" wx:if="{{stats.totalMilk}}">{{stats.totalMilk}}ml</text>
+          </view>
+        </view>
+      </view>
+      <view class="bs-mini-card diaper">
+        <text class="bs-mini-icon">💩</text>
+        <view class="bs-mini-body">
+          <text class="bs-mini-label">换尿布</text>
+          <view class="bs-mini-values">
+            <text class="bs-mini-main">{{stats.diaperCount || 0}}次</text>
+            <text class="bs-mini-sub">尿{{stats.wetDiaperCount || 0}}</text>
+            <text class="bs-mini-sub">便{{stats.dirtyDiaperCount || 0}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="bs-stat-split"></view>
+    <view class="bs-stat-col">
+      <view class="bs-mini-card sleep">
+        <text class="bs-mini-icon">😴</text>
+        <view class="bs-mini-body">
+          <text class="bs-mini-label">今日已睡</text>
+          <view class="bs-mini-values">
+            <text class="bs-mini-main">{{stats.todaySleepTotal}}</text>
+            <text class="bs-mini-sub" wx:if="{{stats.sleepCount}}">{{stats.sleepCount}}次</text>
+          </view>
+        </view>
+      </view>
+      <view class="bs-mini-card growth">
+        <text class="bs-mini-icon">📏</text>
+        <view class="bs-mini-body">
+          <text class="bs-mini-label">身高体重</text>
+          <view class="bs-mini-values growth-values">
+            <text class="bs-mini-main">{{stats.latestHeight || '--'}}cm</text>
+            <text class="bs-mini-sub">/</text>
+            <text class="bs-mini-main">{{stats.latestWeight || '--'}}kg</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

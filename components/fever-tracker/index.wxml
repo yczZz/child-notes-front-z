@@ -1,0 +1,40 @@
+<!-- components/fever-tracker/index.wxml -->
+<view class="ft-panel" wx:if="{{visible}}">
+  <!-- 标题 + 体温 -->
+  <view class="ft-hd">
+    <view class="ft-hd-left">
+      <text class="ft-icon">🌡️</text>
+      <text class="ft-title">发烧追踪</text>
+    </view>
+    <text class="ft-temp">{{temperature}}℃</text>
+  </view>
+
+  <!-- 信息双栏 -->
+  <view class="ft-bd">
+    <view class="ft-item">
+      <view class="ft-label">距上次用药</view>
+      <view class="ft-value {{timeSinceMed === '暂未用药' ? '' : 'warn'}}">{{timeSinceMed}}</view>
+    </view>
+    <view class="ft-split"></view>
+    <view class="ft-item">
+      <view class="ft-label">建议间隔</view>
+      <view class="ft-value">≥ 4小时</view>
+    </view>
+  </view>
+
+  <!-- 过量警告 -->
+  <view wx:if="{{overdoseWarning}}" class="ft-overdose">
+    ⚠️ 上次用药未满4小时，请核对医嘱后再记录用药
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="ft-actions">
+    <view class="ft-btn" bindtap="onRecordTemp">记录体温</view>
+    <view class="ft-btn ft-btn-danger" bindtap="onRecordMed">记录用药</view>
+  </view>
+
+  <!-- 已退烧 -->
+  <view class="ft-recovered">
+    <text class="ft-recovered-btn" bindtap="onRecovered">✅ 已退烧</text>
+  </view>
+</view>

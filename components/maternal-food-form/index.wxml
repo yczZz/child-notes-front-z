@@ -1,0 +1,101 @@
+<!-- components/maternal-food-form/index.wxml -->
+<view class="maternal-food-form">
+  <view class="section">
+    <view class="section-title">餐次</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{mealTypes}}"
+        wx:key="value"
+        class="chip {{mealType === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="selectMealType"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">妈妈今天吃了什么</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{defaultFoodOptions}}"
+        wx:key="name"
+        class="chip {{item.selected ? 'active' : ''}}"
+        data-value="{{item.name}}"
+        bindtap="toggleFood"
+      >{{item.name}}</view>
+      <view
+        wx:for="{{backendCustomFoodOptions}}"
+        wx:key="name"
+        class="chip chip-custom {{item.selected ? 'active' : ''}}"
+        data-value="{{item.name}}"
+        bindtap="toggleFood"
+      >{{item.name}}</view>
+      <view
+        wx:for="{{localCustomFoodOptions}}"
+        wx:key="name"
+        class="chip chip-custom {{item.selected ? 'active' : ''}}"
+        data-value="{{item.name}}"
+        bindtap="toggleFood"
+      >{{item.name}}</view>
+      <view class="chip chip-add" bindtap="tapAddCustom">+ 自定义</view>
+      <view class="chip chip-delete-entry" bindtap="deleteCustomFood">删除</view>
+    </view>
+    <view wx:if="{{showCustomInput}}" class="custom-row">
+      <input
+        class="custom-input"
+        placeholder="输入食物名称"
+        value="{{customFoodValue}}"
+        bindinput="onCustomFoodInput"
+        bindconfirm="addCustomFood"
+        confirm-type="done"
+        adjust-position="{{false}}"
+      />
+      <view class="custom-confirm" bindtap="addCustomFood">添加</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">关联判断</view>
+    <view class="suspicion-grid">
+      <view
+        wx:for="{{suspicionOptions}}"
+        wx:key="value"
+        class="suspicion-item {{suspicionLevel === item.value ? 'active' : ''}} {{item.value === 'suspect' || item.value === 'avoid' ? 'warn' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="selectSuspicion"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">备注 & 照片</view>
+    <textarea
+      class="note-input"
+      placeholder="例如：今天开始忌牛奶；宝宝腹泻后回看这一餐"
+      value="{{note}}"
+      bindinput="onNoteInput"
+      maxlength="500"
+      auto-height
+      adjust-position="{{false}}"
+    />
+    <view class="photo-area">
+      <view wx:for="{{photos}}" wx:key="index" class="photo-thumb" bindtap="previewPhoto" data-url="{{item}}">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="photo-del" catchtap="removePhoto" data-index="{{index}}">×</view>
+      </view>
+      <view wx:if="{{photos.length < 9}}" class="add-photo-btn" bindtap="addPhoto">
+        <text class="add-icon">+</text>
+        <text class="add-text">{{uploading ? '上传中' : '拍照'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存饮食观察</button>
+</view>

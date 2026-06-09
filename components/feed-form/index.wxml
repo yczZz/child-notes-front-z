@@ -1,0 +1,121 @@
+<!-- components/feed-form/index.wxml -->
+<view class="feed-form">
+  <!-- 喂奶类型切换 -->
+  <view class="type-tabs">
+    <view
+      class="tab-item {{feedType === 'bottle' ? 'active' : ''}}"
+      bindtap="switchType"
+      data-type="bottle"
+    >🍼 配方奶</view>
+    <view
+      class="tab-item {{feedType === 'breast' ? 'active' : ''}}"
+      bindtap="switchType"
+      data-type="breast"
+    >🤱 母乳亲喂</view>
+    <view
+      class="tab-item {{feedType === 'expressed' ? 'active' : ''}}"
+      bindtap="switchType"
+      data-type="expressed"
+    >🍶 母乳瓶喂</view>
+  </view>
+
+  <!-- 母乳 -->
+  <block wx:if="{{feedType === 'breast'}}">
+    <!-- 左侧计时 -->
+    <view class="side-timer">
+      <view class="side-timer-hd">
+        <text class="side-label">← 左侧</text>
+        <text class="side-acc" wx:if="{{leftAccMin > 0}}">已计{{leftAccMin}}分钟</text>
+      </view>
+      <view class="side-timer-body">
+        <picker
+          wx:if="{{!leftTiming}}"
+          class="duration-picker"
+          mode="multiSelector"
+          range="{{durationPickerRange}}"
+          value="{{leftDurationIndex}}"
+          data-side="left"
+          bindchange="onSideDurationChange"
+        >
+          <view class="side-timer-display editable">{{leftTimerDisplay}}</view>
+        </picker>
+        <text wx:else class="side-timer-display active">{{leftTimerDisplay}}</text>
+        <button
+          class="timer-btn small {{leftTiming ? 'stop' : 'start'}}"
+          bindtap="{{leftTiming ? 'stopLeft' : 'startLeft'}}"
+        >{{leftTiming ? '⏹' : '▶'}}</button>
+      </view>
+    </view>
+
+    <!-- 右侧计时 -->
+    <view class="side-timer">
+      <view class="side-timer-hd">
+        <text class="side-label">→ 右侧</text>
+        <text class="side-acc" wx:if="{{rightAccMin > 0}}">已计{{rightAccMin}}分钟</text>
+      </view>
+      <view class="side-timer-body">
+        <picker
+          wx:if="{{!rightTiming}}"
+          class="duration-picker"
+          mode="multiSelector"
+          range="{{durationPickerRange}}"
+          value="{{rightDurationIndex}}"
+          data-side="right"
+          bindchange="onSideDurationChange"
+        >
+          <view class="side-timer-display editable">{{rightTimerDisplay}}</view>
+        </picker>
+        <text wx:else class="side-timer-display active">{{rightTimerDisplay}}</text>
+        <button
+          class="timer-btn small {{rightTiming ? 'stop' : 'start'}}"
+          bindtap="{{rightTiming ? 'stopRight' : 'startRight'}}"
+        >{{rightTiming ? '⏹' : '▶'}}</button>
+      </view>
+    </view>
+
+    <!-- 总时长 -->
+    <view class="total-timer" wx:if="{{leftAccSec > 0 || rightAccSec > 0 || leftTiming || rightTiming}}">
+      <text class="total-label">累计总时长</text>
+      <text class="total-value">{{totalTimerDisplay}}</text>
+    </view>
+
+  </block>
+
+  <!-- 配方奶 / 母乳瓶喂 -->
+  <block wx:if="{{feedType === 'bottle' || feedType === 'expressed'}}">
+    <view class="input-group">
+      <view class="label">喂养量（ml）</view>
+      <picker mode="selector" value="{{amountIndex}}" range="{{amountPickerRange}}" disabled="{{!amountReady}}" bindchange="onAmountChange">
+        <view class="picker-value">
+          <text wx:if="{{amountReady}}">{{amount}}ml</text>
+          <text wx:else>读取上次奶量...</text>
+        </view>
+      </picker>
+    </view>
+  </block>
+
+  <!-- 时间选择（通用） -->
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <!-- 保存按钮 -->
+  <button class="save-btn" bindtap="onSave">{{feedType === 'breast' ? (leftTiming || rightTiming ? '结束亲喂' : '保存亲喂') : '保存记录'}}</button>
+</view>

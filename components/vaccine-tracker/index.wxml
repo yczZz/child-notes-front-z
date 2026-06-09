@@ -1,0 +1,196 @@
+<!-- components/vaccine-tracker/index.wxml -->
+<view class="v-panel">
+  <view class="v-header">
+    <view class="v-header-left">
+      <text>💉</text>
+      <view>
+        <text class="v-title">疫苗追踪</text>
+        <text class="v-progress">{{progressText}}</text>
+      </view>
+    </view>
+    <view class="v-header-btns">
+      <view class="v-btn-outline" bindtap="onToggleExpanded">{{expanded ? '收起' : '展开'}}</view>
+      <!-- <view class="v-btn-outline" bindtap="onToggleDetail">详情</view> -->
+      <view class="v-btn" bindtap="onRecord">补记</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!expanded}}" class="v-compact">
+    <view
+      wx:for="{{nextSections}}"
+      wx:key="key"
+      class="v-compact-row"
+    >
+      <text class="v-compact-label">{{item.name}}</text>
+      <text wx:if="{{item.plan}}" class="v-compact-name">{{item.plan.name}}</text>
+      <text wx:else class="v-compact-empty">暂无待推荐</text>
+      <text wx:if="{{item.plan}}" class="v-compact-status {{item.plan.statusClass}}">{{item.plan.statusText}}</text>
+      <text wx:else class="v-compact-status empty">暂无</text>
+    </view>
+  </view>
+
+  <view wx:else class="v-next-list">
+    <view
+      wx:for="{{nextSections}}"
+      wx:key="key"
+      class="v-next"
+    >
+      <view class="v-next-main">
+        <view class="v-next-kicker">{{item.name}} · {{item.desc}}</view>
+        <block wx:if="{{item.plan}}">
+          <view class="v-col-value">{{item.plan.name}}</view>
+          <view class="v-col-time">
+            {{item.plan.ageLabel}} · {{item.plan.recommendedDateText || '按门诊安排'}}
+          </view>
+          <view class="v-status {{item.plan.statusClass}}">{{item.plan.statusText}}</view>
+        </block>
+        <view wx:else class="v-next-empty">暂无待推荐</view>
+      </view>
+      <view wx:if="{{item.plan}}" class="v-actions">
+        <picker
+          class="v-done-picker"
+          mode="multiSelector"
+          value="{{timeIndex}}"
+          range="{{timeRange}}"
+          bindchange="onQuickMarkTimeChange"
+          data-key="{{item.plan.key}}"
+        >
+          <view class="v-done-btn">已打</view>
+        </picker>
+        <view class="v-skip-btn" catchtap="onSkip" data-key="{{item.plan.key}}">跳过</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{lastVaccine}}" class="v-last">
+    <view>
+      <view class="v-col-label">上次接种</view>
+      <view class="v-last-name">{{lastVaccine.name}}</view>
+    </view>
+    <view class="v-last-time" wx:if="{{lastVaccine.time}}">{{lastVaccine.time}}</view>
+  </view>
+
+  <view wx:if="{{showDetail}}" class="v-mask" bindtap="onCloseDetail">
+    <view class="v-sheet" catchtap="stopTap">
+      <view class="v-sheet-hd">
+        <text class="v-sheet-title">疫苗接种计划</text>
+        <text class="v-sheet-close" bindtap="onCloseDetail">✕</text>
+      </view>
+
+      <view class="v-plan v-plan-timeline">
+        <view class="v-time-head">
+          <view class="v-time-head-col">免费疫苗</view>
+          <view class="v-time-head-axis">时间</view>
+          <view class="v-time-head-col paid">自费疫苗</view>
+        </view>
+
+        <view
+          wx:for="{{timelineGroups}}"
+          wx:key="key"
+          class="v-time-row"
+        >
+          <view class="v-time-col left">
+            <view wx:if="{{item.hasFree}}" class="v-time-list">
+              <view
+                wx:for="{{item.freeDoses}}"
+                wx:for-item="dose"
+                wx:key="key"
+                class="v-time-dose {{dose.statusClass}}"
+              >
+                <view class="v-time-dose-name">{{dose.name}}</view>
+                <view class="v-time-dose-meta">{{dose.doseLabel}} · {{dose.recommendedDateText || '按门诊安排'}}</view>
+                <view class="v-time-dose-meta">预防：{{dose.disease}}</view>
+                <view wx:if="{{dose.doneTime}}" class="v-time-dose-note">记录：{{dose.doneTime}}</view>
+                <view wx:elif="{{dose.skippedTime}}" class="v-time-dose-note">跳过：{{dose.skippedTime}}</view>
+                <view wx:elif="{{dose.replacedByName}}" class="v-time-dose-note">由 {{dose.replacedByName}} 覆盖</view>
+
+                <view wx:if="{{dose.done}}" class="v-time-status done">已打</view>
+                <view wx:elif="{{dose.skipped}}" class="v-time-status skipped">已跳过</view>
+                <view wx:elif="{{dose.replaced}}" class="v-time-status replaced">已替代</view>
+                <view wx:else class="v-time-actions">
+                  <picker
+                    class="v-time-action-picker"
+                    mode="multiSelector"
+                    value="{{timeIndex}}"
+                    range="{{timeRange}}"
+                    bindchange="onQuickMarkTimeChange"
+                    data-key="{{dose.key}}"
+                  >
+                    <view class="v-time-mark">已打</view>
+                  </picker>
+                  <view class="v-time-skip" catchtap="onSkip" data-key="{{dose.key}}">跳过</view>
+                </view>
+              </view>
+            </view>
+            <view wx:else class="v-time-empty">暂无</view>
+          </view>
+
+          <view class="v-time-axis">
+            <view class="v-time-line"></view>
+            <view class="v-time-dot"></view>
+            <view class="v-time-label">{{item.name}}</view>
+            <view wx:if="{{item.dateText}}" class="v-time-date">{{item.dateText}}</view>
+            <view class="v-time-count">{{item.handledCount}}/{{item.totalCount}}</view>
+          </view>
+
+          <view class="v-time-col right">
+            <view wx:if="{{item.hasPaid}}" class="v-time-list">
+              <view
+                wx:for="{{item.paidDoses}}"
+                wx:for-item="dose"
+                wx:key="key"
+                class="v-time-dose {{dose.statusClass}}"
+              >
+                <view class="v-time-dose-name">{{dose.name}}</view>
+                <view class="v-time-dose-meta">{{dose.doseLabel}} · {{dose.recommendedDateText || '按门诊安排'}}</view>
+                <view class="v-time-dose-meta">预防：{{dose.disease}}</view>
+                <view wx:if="{{dose.doneTime}}" class="v-time-dose-note">记录：{{dose.doneTime}}</view>
+                <view wx:elif="{{dose.skippedTime}}" class="v-time-dose-note">跳过：{{dose.skippedTime}}</view>
+                <view wx:elif="{{dose.replacedByName}}" class="v-time-dose-note">由 {{dose.replacedByName}} 覆盖</view>
+
+                <view wx:if="{{dose.done}}" class="v-time-status done">已打</view>
+                <view wx:elif="{{dose.skipped}}" class="v-time-status skipped">已跳过</view>
+                <view wx:elif="{{dose.replaced}}" class="v-time-status replaced">已替代</view>
+                <view wx:else class="v-time-actions">
+                  <picker
+                    class="v-time-action-picker"
+                    mode="multiSelector"
+                    value="{{timeIndex}}"
+                    range="{{timeRange}}"
+                    bindchange="onQuickMarkTimeChange"
+                    data-key="{{dose.key}}"
+                  >
+                    <view class="v-time-mark">已打</view>
+                  </picker>
+                  <view class="v-time-skip" catchtap="onSkip" data-key="{{dose.key}}">跳过</view>
+                </view>
+              </view>
+            </view>
+            <view wx:else class="v-time-empty">暂无</view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{reversedList.length > 0}}" class="v-history">
+        <view class="v-history-title">接种记录</view>
+        <view class="v-timeline">
+          <view
+            wx:for="{{reversedList}}"
+            wx:key="index"
+            class="v-tl-item"
+          >
+            <view class="v-tl-dot"></view>
+            <view class="v-tl-body">
+              <view class="v-tl-name">{{item.status === 'skipped' ? '已跳过：' : ''}}{{item.name}}</view>
+              <view class="v-tl-time">{{item.time || ''}}</view>
+              <view wx:if="{{item.status === 'skipped'}}" class="v-tl-tag skipped">跳过</view>
+              <view wx:if="{{item.note}}" class="v-tl-note">{{item.note}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else class="v-empty-lg">暂无接种记录</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,60 @@
+<!-- components/sleep-form/index.wxml -->
+<view class="sleep-form">
+  <!-- 计时模式 -->
+  <view class="timer-section">
+    <view class="timer-label">{{completedEdit ? '已完成的睡眠记录' : (timing ? '宝宝正在睡觉...' : (timerSeconds > 0 ? '已记录睡眠时长' : '点击开始记录睡眠'))}}</view>
+
+    <view class="timer-display {{timing ? 'active' : ''}}">{{timing || timerSeconds > 0 ? timerDisplay : '--:--:--'}}</view>
+
+    <button
+      class="timer-main-btn {{timing ? 'stop' : 'start'}} {{completedEdit ? 'disabled' : ''}}"
+      bindtap="{{timing ? 'stopTimer' : 'startTimer'}}"
+      disabled="{{completedEdit}}"
+    >
+      <text class="btn-icon">{{completedEdit ? '✓' : (timing ? '🌙' : '😴')}}</text>
+      <text>{{completedEdit ? '已完成' : (timing ? '宝宝醒了' : '宝宝睡了')}}</text>
+    </button>
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注</view>
+    <textarea
+      class="note-input {{completedEdit ? 'disabled' : ''}}"
+      placeholder="{{completedEdit ? '完整睡眠记录仅支持修改时间' : '补充说明...'}}"
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      disabled="{{completedEdit}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <!-- 手动补记 -->
+  <view class="manual-section">
+    <view class="divider"><text>{{completedEdit ? '修改时间' : '或手动补记'}}</text></view>
+
+    <view class="manual-fields">
+      <view class="input-group">
+        <view class="label">入睡时间</view>
+        <picker mode="multiSelector" value="{{startTimeIndex}}" range="{{timeRange}}" bindchange="onStartTimeChange">
+          <view class="picker-value">{{startTime || '点击选择'}}</view>
+        </picker>
+      </view>
+
+      <view class="input-group">
+        <view class="label">醒来时间</view>
+        <picker mode="multiSelector" value="{{endTimeIndex}}" range="{{timeRange}}" bindchange="onEndTimeChange">
+          <view class="picker-value">{{endTime || '点击选择'}}</view>
+        </picker>
+      </view>
+
+      <view wx:if="{{manualDuration}}" class="calc-duration">
+        本次睡眠：{{manualDuration}}
+      </view>
+    </view>
+
+    <button class="save-btn manual-save" bindtap="onManualSave">{{completedEdit ? '保存修改' : '保存手动记录'}}</button>
+  </view>
+</view>

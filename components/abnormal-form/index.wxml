@@ -1,0 +1,94 @@
+<!-- components/abnormal-form/index.wxml -->
+<wxs module="f">
+  var includes = function(arr, val) {
+    if (!arr) return false;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === val) return true;
+    }
+    return false;
+  };
+  module.exports = { includes: includes };
+</wxs>
+
+<view class="abnormal-form">
+  <!-- 呼吸道症状 -->
+  <view class="section">
+    <view class="section-header">💨 呼吸道症状（多选）</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{respiratoryOptions}}"
+        wx:key="value"
+        class="chip {{f.includes(respiratory, item.value) ? 'active' : ''}}"
+        bindtap="toggleRespiratory"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 消化道异常 -->
+  <view class="section">
+    <view class="section-header">💩 消化道异常</view>
+
+    <view class="sub-label">呕吐</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{vomitTypes}}"
+        wx:key="value"
+        class="chip chip-danger {{vomit === item.value ? 'active-danger' : ''}}"
+        bindtap="selectVomit"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 其他异常 -->
+  <view class="section">
+    <view class="section-header">🚨 其他异常</view>
+    <view class="input-group">
+      <view class="sub-label">异常描述</view>
+      <textarea
+        class="note-input"
+        placeholder="如：精神差、哭闹、皮疹、辅食后反应异常等"
+        value="{{other}}"
+        bindinput="onOtherInput"
+        maxlength="300"
+        adjust-position="{{false}}"
+        auto-height
+      />
+    </view>
+  </view>
+
+  <!-- 备注 & 拍照 -->
+  <view class="section">
+    <view class="section-header">📎 备注 & 附件</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      maxlength="500"
+      adjust-position="{{false}}"
+      auto-height
+    />
+    <view class="photo-area">
+      <view wx:for="{{photos}}" wx:key="index" class="photo-thumb" bindtap="previewPhoto" data-url="{{item}}">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="photo-remove" catchtap="removePhoto" data-index="{{index}}">×</view>
+      </view>
+      <view wx:if="{{photos.length < 9}}" class="add-photo-btn" bindtap="addPhoto">
+        <text>+</text>
+        <text class="photo-tip">{{uploading ? '上传中' : '拍照'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间选择 -->
+  <view class="input-group">
+    <view class="sub-label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <button class="save-btn danger-save" bindtap="onSave">🚨 保存异常记录</button>
+</view>

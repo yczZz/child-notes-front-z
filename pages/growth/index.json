@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "成长记录",
+  "usingComponents": {
+    "img-preview": "/components/img-preview/index"
+  }
+}

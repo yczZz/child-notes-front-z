@@ -1,0 +1,132 @@
+<!-- components/supplement-form/index.wxml -->
+<view class="supplement-form">
+  <!-- 类型切换 -->
+  <view class="type-tabs">
+    <view
+      class="tab-item {{formType === 'supplement' ? 'active' : ''}}"
+      bindtap="switchType"
+      data-type="supplement"
+    >💚 补充剂</view>
+    <view
+      class="tab-item {{formType === 'medicine' ? 'active' : ''}}"
+      bindtap="switchType"
+      data-type="medicine"
+    >💊 用药</view>
+  </view>
+
+  <view class="input-group">
+    <view class="label">常用{{formType === 'medicine' ? '药物' : '补充剂'}}</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{nameOptions}}"
+        wx:key="*this"
+        class="chip {{name === item && !customName ? 'active' : ''}}"
+        bindtap="selectName"
+        data-name="{{item}}"
+        data-custom="false"
+      >{{item}}</view>
+      <view
+        wx:for="{{customNameOptions}}"
+        wx:key="*this"
+        class="chip chip-custom {{name === item && customName ? 'active' : ''}}"
+        bindtap="selectName"
+        data-name="{{item}}"
+        data-custom="true"
+      >{{item}}</view>
+      <view class="chip chip-add {{showCustomInput ? 'active' : ''}}" bindtap="tapAddCustom">
+        {{showCustomInput ? '自定义' : '+ 自定义'}}
+      </view>
+      <view class="chip chip-delete-entry" bindtap="deleteCustomName">删除</view>
+    </view>
+    <view wx:if="{{showCustomInput}}" class="custom-row">
+      <input
+        class="custom-input"
+        placeholder="{{formType === 'medicine' ? '输入药物名称' : '输入补充剂名称'}}"
+        value="{{customNameValue}}"
+        bindinput="onCustomNameInput"
+        adjust-position="{{false}}"
+        confirm-type="done"
+        bindconfirm="addCustomName"
+      />
+      <view class="custom-confirm" bindtap="addCustomName">添加</view>
+    </view>
+  </view>
+
+  <view class="input-group">
+    <view class="label">{{formType === 'medicine' ? '药物名称' : '补充剂名称'}}</view>
+    <input
+      class="field-input"
+      placeholder="{{formType === 'medicine' ? '如：泰诺林、布洛芬、蒙脱石散' : '如：维生素D、益生菌、DHA'}}"
+      value="{{name}}"
+      bindinput="onNameInput"
+      adjust-position="{{false}}"
+    />
+  </view>
+
+  <view class="input-group">
+    <view class="label">剂量</view>
+    <view class="dose-row">
+      <input
+        class="dose-input"
+        placeholder="请输入数量"
+        value="{{dose}}"
+        bindinput="onDoseInput"
+        adjust-position="{{false}}"
+      />
+    </view>
+    <view class="dose-units">
+      <view
+        wx:for="{{defaultDoseUnits}}"
+        wx:key="*this"
+        class="unit-btn {{doseUnit === item && !customDoseUnit ? 'active' : ''}}"
+        bindtap="selectDoseUnit"
+        data-unit="{{item}}"
+        data-custom="false"
+      >{{item}}</view>
+      <view
+        wx:for="{{customDoseUnits}}"
+        wx:key="*this"
+        class="unit-btn unit-custom {{doseUnit === item && customDoseUnit ? 'active' : ''}}"
+        bindtap="selectDoseUnit"
+        data-unit="{{item}}"
+        data-custom="true"
+      >{{item}}</view>
+      <view class="unit-btn unit-add {{showCustomUnitInput ? 'active' : ''}}" bindtap="tapAddCustomUnit">+ 自定义</view>
+      <view class="unit-btn unit-delete" bindtap="deleteCustomDoseUnit">删除</view>
+    </view>
+    <view wx:if="{{showCustomUnitInput}}" class="custom-row unit-custom-row">
+      <input
+        class="custom-input"
+        placeholder="输入单位"
+        value="{{customUnitValue}}"
+        bindinput="onCustomUnitInput"
+        adjust-position="{{false}}"
+        confirm-type="done"
+        bindconfirm="addCustomDoseUnit"
+      />
+      <view class="custom-confirm" bindtap="addCustomDoseUnit">添加</view>
+    </view>
+  </view>
+
+  <view class="input-group">
+    <view class="label">备注（选填）</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

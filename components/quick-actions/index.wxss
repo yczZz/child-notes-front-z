@@ -1,0 +1,75 @@
+/* components/quick-actions/index.wxss */
+
+.actions-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 400;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.actions-mask.show { opacity: 1; visibility: visible; }
+
+.actions-panel {
+  position: fixed; left: 0; right: 0;
+  bottom: calc(100rpx + env(safe-area-inset-bottom));
+  background: var(--weui-BG-2);
+  border-radius: 24rpx 24rpx 0 0;
+  z-index: 500;
+  transform: translateY(calc(100% - 240rpx));
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 -4rpx 30rpx rgba(0,0,0,0.08);
+}
+.actions-panel.expanded { transform: translateY(0); border-radius: 32rpx 32rpx 0 0; }
+
+.panel-pull {
+  display: flex; justify-content: center; position: relative;
+}
+
+.pull-tab {
+  display: flex; align-items: center; justify-content: center; gap: 8rpx;
+  margin-top: -16rpx; padding: 18rpx 48rpx;
+  background: var(--weui-BG-2); border-radius: 48rpx;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.12), 0 2rpx 6rpx rgba(0,0,0,0.06);
+  position: relative; z-index: 2;
+}
+
+.pull-text { font-size: 28rpx; font-weight: 600; color: var(--weui-GREEN); }
+.pull-arrow { font-size: 22rpx; color: var(--weui-GREEN); }
+
+.actions-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12rpx; padding: 12rpx 24rpx 28rpx;
+}
+
+.action-item {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 24rpx 6rpx;
+  background: var(--weui-BG-1); border-radius: 16rpx;
+  transition: background 0.15s;
+}
+.action-item:active { background: var(--weui-BG-COLOR-ACTIVE); }
+
+.action-icon {
+  font-size: 44rpx; margin-bottom: 8rpx;
+  width: 72rpx; height: 72rpx;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 18rpx;
+}
+
+.feed-icon        { background: #fff0e6; }
+.diaper-icon      { background: #fff8e1; }
+.sleep-icon       { background: #e8f0fe; }
+.temperature-icon { background: #ffe8e8; }
+.supplement-icon  { background: #f3e5f5; }
+.pump-icon        { background: #e8f5e9; }
+.comp-icon        { background: #fff3e0; }
+.maternal-food-icon { background: #f2f7e8; }
+.growth-icon      { background: #e0f2f1; }
+
+.sleep-icon.pulse { animation: pulse-sleep 1.5s infinite; }
+
+@keyframes pulse-sleep {
+  0%, 100% { background: #e8f0fe; }
+  50% { background: #c8d8f8; }
+}
+
+.action-name { font-size: 22rpx; color: var(--weui-FG-0); font-weight: 500; }

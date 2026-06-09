@@ -1,0 +1,8 @@
+{
+  "name": "child-notes-front",
+  "version": "1.0.0",
+  "description": "Baby growth record WeChat Mini Program",
+  "dependencies": {
+    "weui-miniprogram": "^1.3.1"
+  }
+}

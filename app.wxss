@@ -1,0 +1,173 @@
+/* app.wxss - WeUI 设计规范 */
+
+/* === WeUI 设计令牌 === */
+page {
+  --weui-BG-0: #ededed;
+  --weui-BG-1: #f7f7f7;
+  --weui-BG-2: #ffffff;
+  --weui-BG-3: #f7f7f7;
+  --weui-FG-0: rgba(0, 0, 0, 0.9);
+  --weui-FG-HALF: rgba(0, 0, 0, 0.9);
+  --weui-FG-1: rgba(0, 0, 0, 0.55);
+  --weui-FG-2: rgba(0, 0, 0, 0.3);
+  --weui-FG-3: rgba(0, 0, 0, 0.1);
+  --weui-RED: #fa5151;
+  --weui-ORANGE: #fa9d3b;
+  --weui-YELLOW: #ffc300;
+  --weui-GREEN: #07c160;
+  --weui-BLUE: #10aeff;
+  --weui-INDIGO: #1485ee;
+  --weui-PURPLE: #6467f0;
+  --weui-WHITE: #ffffff;
+  --weui-LINK: #576b95;
+  --weui-BG-COLOR-ACTIVE: #ececec;
+  --weui-FONT: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  font-family: var(--weui-FONT);
+  font-size: 28rpx;
+  color: var(--weui-FG-0);
+  background-color: var(--weui-BG-0);
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+/* === WeUI 基础工具类 === */
+
+/* Flex */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-1 { flex: 1; }
+
+/* 文字 */
+.text-center { text-align: center; }
+.text-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.text-muted { color: var(--weui-FG-1); }
+.text-primary { color: var(--weui-GREEN); }
+.text-warn { color: var(--weui-ORANGE); }
+.text-danger { color: var(--weui-RED); }
+
+/* 间距 */
+.mt-16 { margin-top: 16rpx; }
+.mt-24 { margin-top: 24rpx; }
+.mt-32 { margin-top: 32rpx; }
+.mb-16 { margin-bottom: 16rpx; }
+.mb-24 { margin-bottom: 24rpx; }
+
+/* WeUI 单元格 */
+.weui-cells {
+  background: var(--weui-BG-2);
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin: 16rpx 24rpx;
+}
+
+.weui-cell {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  position: relative;
+}
+
+.weui-cell + .weui-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 28rpx;
+  right: 0;
+  height: 1rpx;
+  background: var(--weui-FG-3);
+}
+
+.weui-cell__hd { margin-right: 20rpx; }
+.weui-cell__bd { flex: 1; }
+.weui-cell__ft { color: var(--weui-FG-1); }
+
+/* WeUI 按钮 */
+.weui-btn {
+  display: inline-block;
+  text-align: center;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  padding: 24rpx 32rpx;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+.weui-btn_primary {
+  background: var(--weui-GREEN);
+  color: #fff;
+}
+
+.weui-btn_warn {
+  background: var(--weui-RED);
+  color: #fff;
+}
+
+.weui-btn_default {
+  background: var(--weui-BG-2);
+  color: var(--weui-FG-0);
+  border: 1rpx solid var(--weui-FG-3);
+}
+
+.weui-btn_mini {
+  font-size: 24rpx;
+  padding: 12rpx 24rpx;
+}
+
+/* WeUI 加载 */
+.weui-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  color: var(--weui-FG-1);
+  font-size: 26rpx;
+}
+
+/* WeUI 空状态 */
+.weui-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 40rpx;
+}
+
+.weui-msg__icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.weui-msg__title {
+  font-size: 30rpx;
+  color: var(--weui-FG-HALF);
+  margin-bottom: 12rpx;
+}
+
+.weui-msg__desc {
+  font-size: 26rpx;
+  color: var(--weui-FG-1);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* WeUI 卡片 */
+.weui-panel {
+  background: var(--weui-BG-2);
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.weui-panel__hd {
+  padding: 24rpx 28rpx 0;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--weui-FG-HALF);
+}
+
+.weui-panel__bd {
+  padding: 20rpx 28rpx 28rpx;
+}

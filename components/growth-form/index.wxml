@@ -1,0 +1,61 @@
+<!-- components/growth-form/index.wxml -->
+<view class="growth-form">
+  <view class="growth-hint">记录宝宝的生长发育数据</view>
+
+  <view class="measure-cards">
+    <view class="measure-card">
+      <view class="measure-icon">📏</view>
+      <view class="measure-label">身高</view>
+      <view class="input-row">
+        <input
+          class="measure-input"
+          type="digit"
+          placeholder="0"
+          value="{{height}}"
+          bindinput="onHeightInput"
+          adjust-position="{{false}}"
+        />
+        <text class="measure-unit">cm</text>
+      </view>
+    </view>
+
+    <view class="measure-card">
+      <view class="measure-icon">⚖️</view>
+      <view class="measure-label">体重</view>
+      <view class="input-row">
+        <input
+          class="measure-input"
+          type="digit"
+          placeholder="0"
+          value="{{weight}}"
+          bindinput="onWeightInput"
+          adjust-position="{{false}}"
+        />
+        <text class="measure-unit">kg</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

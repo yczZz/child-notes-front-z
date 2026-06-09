@@ -1,0 +1,231 @@
+<!-- pages/index/index.wxml -->
+<page-meta page-style="{{showDrawer ? 'overflow: hidden;' : ''}}"></page-meta>
+
+<view class="home-page">
+
+  <!-- 1. 宝宝状态栏 -->
+  <baby-status-bar baby="{{baby}}" stats="{{stats}}" bind:stats="onStatsTap" bind:signin="onSignInEntry" bind:record="onQuickRecord" bind:switchbaby="openBabySwitcher" />
+
+  <!-- 1b. 宝宝状态良好（无异常时显示） -->
+  <good-status
+    visible="{{!hasFever && !hasDiarrhea && !hasOtherAbnormal && baby.name}}"
+    babyName="{{baby.name}}"
+    dailyTips="{{dailyTips}}"
+    growthStage="{{growthStage}}"
+    sleeping="{{sleepActive}}"
+    sleepStatusText="{{sleepStatusText}}"
+  />
+
+  <!-- 1c. 疫苗追踪（常驻） -->
+  <vaccine-tracker
+    baby="{{baby}}"
+    lastVaccine="{{lastVaccine}}"
+    vaccineList="{{vaccineList}}"
+    customVaccines="{{customVaccineList}}"
+    pageVersion="{{pageVersion}}"
+    bind:record="onVaccineRecord"
+    bind:quickmark="onVaccineQuickMark"
+    bind:skip="onVaccineSkip"
+  />
+
+  <!-- 1d. 活动追踪（常驻） -->
+  <activity-tracker
+    lastActivity="{{lastActivity}}"
+    activities="{{activityList}}"
+    pageVersion="{{pageVersion}}"
+    bind:record="onActivityRecord"
+  />
+
+  <!-- 2. 发烧追踪模块（发热时显示） -->
+  <fever-tracker
+    visible="{{hasFever}}"
+    temperature="{{feverInfo.temperature}}"
+    lastMedTime="{{feverMedTime}}"
+    bind:recordtemp="onFeverRecordTemp"
+    bind:recordmed="onFeverRecordMed"
+    bind:recovered="onFeverRecovered"
+  />
+
+  <!-- 2b. 腹泻追踪模块（腹泻时显示） -->
+  <diarrhea-tracker
+    visible="{{hasDiarrhea}}"
+    diarrheaTypes="{{diarrheaTypes}}"
+    lastTime="{{diarrheaTime}}"
+    bind:recorddiaper="onDiarrheaRecordDiaper"
+    bind:recordabnormal="onDiarrheaRecordAbnormal"
+    bind:recordmaternalfood="onDiarrheaRecordMaternalFood"
+    bind:recovered="onDiarrheaRecovered"
+  />
+
+  <view wx:if="{{hasOtherAbnormal}}" class="other-abnormal-card">
+    <view class="other-abnormal-head">
+      <view class="other-abnormal-title">🚨 其他异常追踪</view>
+      <view class="other-abnormal-time">{{otherAbnormalTime || '刚刚'}}</view>
+    </view>
+    <view class="other-abnormal-summary">{{otherAbnormalSummary || '有新的异常记录'}}</view>
+    <view wx:if="{{otherAbnormalNote}}" class="other-abnormal-note">
+      {{otherAbnormalNote}}
+    </view>
+    <view class="other-abnormal-actions">
+      <view class="other-abnormal-btn" bindtap="onAbnormalTap">继续记录</view>
+      <view class="other-abnormal-btn secondary" bindtap="onOtherAbnormalRecovered">已恢复</view>
+    </view>
+  </view>
+
+  <!-- 3. 金刚区快捷记录 -->
+  <quick-actions
+    sleepActive="{{sleepActive}}"
+    bind:record="onQuickRecord"
+  />
+
+  <!-- 4. 异常/生病记入口 -->
+  <view class="weui-panel abnormal-panel">
+    <view class="weui-cell" bindtap="onAbnormalTap">
+      <view class="weui-cell__hd">🚨</view>
+      <view class="weui-cell__bd" style="color:var(--weui-RED);font-weight:500">异常 / 生病记</view>
+      <view class="weui-cell__ft">›</view>
+    </view>
+  </view>
+
+  <!-- 5. 底部弹窗 -->
+  <record-drawer
+    visible="{{showDrawer}}"
+    title="{{drawerTitle}}"
+    bind:close="onDrawerClose"
+  >
+
+    <!-- 喂奶表单 -->
+    <feed-form
+      wx:if="{{showDrawer && drawerType ==='feed'}}"
+      feedOngoing="{{feedOngoing}}"
+      bind:save="onFeedSave"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 尿布表单 -->
+    <diaper-form
+      wx:if="{{showDrawer && drawerType ==='diaper'}}"
+      bind:save="onDiaperSave"
+      bind:photochoose="onDrawerPhotoChoose"
+      bind:photochooseend="onDrawerPhotoChooseEnd"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 睡眠表单 -->
+    <sleep-form
+      wx:if="{{showDrawer && drawerType ==='sleep'}}"
+      sleepOngoing="{{sleepOngoing}}"
+      bind:save="onSleepSave"
+      bind:wake="onSleepWake"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 体温表单 -->
+    <temperature-form
+      wx:if="{{showDrawer && drawerType ==='temperature'}}"
+      bind:save="onTemperatureSave"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 补给用药表单 -->
+    <supplement-form
+      wx:if="{{showDrawer && drawerType ==='supplement'}}"
+      initialType="{{supplementInitialType}}"
+      bind:save="onSupplementSave"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 吸奶表单 -->
+    <pump-form
+      wx:if="{{showDrawer && drawerType ==='pump'}}"
+      bind:save="onPumpSave"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 辅食表单 -->
+    <complementary-form
+      wx:if="{{showDrawer && drawerType ==='complementary'}}"
+      bind:save="onComplementarySave"
+      bind:photochoose="onDrawerPhotoChoose"
+      bind:photochooseend="onDrawerPhotoChooseEnd"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 疫苗表单 -->
+    <maternal-food-form
+      wx:if="{{showDrawer && drawerType ==='maternal_food'}}"
+      bind:save="onMaternalFoodSave"
+      bind:photochoose="onDrawerPhotoChoose"
+      bind:photochooseend="onDrawerPhotoChooseEnd"
+      bind:close="onDrawerClose"
+    />
+
+    <vaccine-form
+      wx:if="{{showDrawer && drawerType ==='vaccine'}}"
+      baby="{{baby}}"
+      vaccineList="{{vaccineList}}"
+      customVaccines="{{customVaccineList}}"
+      bind:save="onVaccineSave"
+      bind:customchange="onVaccineCustomChange"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 活动表单 -->
+    <activity-form
+      wx:if="{{showDrawer && drawerType ==='activity'}}"
+      bind:save="onActivitySave"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 成长表单 -->
+    <growth-form
+      wx:if="{{showDrawer && drawerType ==='growth'}}"
+      bind:save="onGrowthSave"
+      bind:close="onDrawerClose"
+    />
+
+    <!-- 异常表单 -->
+    <abnormal-form
+      wx:if="{{showDrawer && drawerType ==='abnormal'}}"
+      bind:save="onAbnormalSave"
+      bind:photochoose="onDrawerPhotoChoose"
+      bind:photochooseend="onDrawerPhotoChooseEnd"
+      bind:close="onDrawerClose"
+    />
+
+  </record-drawer>
+
+  <!-- 宝宝切换 -->
+  <view wx:if="{{showBabySwitcher}}" class="baby-switch-mask" bindtap="closeBabySwitcher" catchtouchmove="stopTouchMove">
+    <view class="baby-switch-sheet" catchtap="stopTap">
+      <view class="baby-switch-hd">
+        <view class="baby-switch-title">切换宝宝</view>
+        <view class="baby-switch-close" bindtap="closeBabySwitcher">✕</view>
+      </view>
+
+      <view wx:if="{{babyList.length === 0}}" class="baby-switch-empty">
+        <view class="baby-switch-empty-title">还没有宝宝信息</view>
+        <view class="baby-switch-empty-desc">先添加宝宝后再开始记录。</view>
+      </view>
+
+      <view wx:else class="baby-switch-list">
+        <block wx:for="{{babyList}}" wx:key="id">
+          <view class="baby-switch-item {{item.id === baby.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="onSelectBaby">
+            <view class="baby-switch-avatar">
+              <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" />
+              <text wx:else>{{item.gender === 'girl' ? '👧' : '👦'}}</text>
+            </view>
+            <view class="baby-switch-meta">
+              <view class="baby-switch-name">{{item.name}}</view>
+              <view class="baby-switch-age">{{item.age || item.birthDate}}</view>
+            </view>
+            <view wx:if="{{item.id === baby.id}}" class="baby-switch-check">✓</view>
+          </view>
+        </block>
+      </view>
+
+      <button class="baby-switch-add" bindtap="onAddBabyFromSwitcher">添加宝宝</button>
+    </view>
+  </view>
+
+</view>

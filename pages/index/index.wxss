@@ -1,0 +1,234 @@
+/* pages/index/index.wxss */
+
+.home-page {
+  min-height: 100vh;
+  background: var(--weui-BG-0);
+  padding-bottom: calc(340rpx + env(safe-area-inset-bottom));
+}
+
+/* 异常入口面板 - 红色强调 */
+.abnormal-panel {
+  background: linear-gradient(135deg, #fff5f5, #fffafa);
+  border: 1rpx solid rgba(250, 81, 81, 0.1);
+}
+
+.other-abnormal-card {
+  margin: 20rpx 24rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  background: #fff7f5;
+  border: 1rpx solid rgba(250, 81, 81, 0.18);
+  box-shadow: 0 8rpx 24rpx rgba(250, 81, 81, 0.08);
+}
+
+.other-abnormal-head {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 14rpx;
+}
+
+.other-abnormal-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #d93025;
+}
+
+.other-abnormal-time {
+  flex-shrink: 0;
+  max-width: 260rpx;
+  font-size: 22rpx;
+  color: #8a5a54;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.other-abnormal-summary {
+  font-size: 28rpx;
+  line-height: 1.55;
+  color: #33201d;
+  overflow-wrap: anywhere;
+}
+
+.other-abnormal-note {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #8a5a54;
+  overflow-wrap: anywhere;
+}
+
+.other-abnormal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16rpx;
+  margin-top: 18rpx;
+}
+
+.other-abnormal-btn {
+  min-width: 148rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 30rpx;
+  padding: 0 24rpx;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #fff;
+  background: #fa5151;
+  box-sizing: border-box;
+}
+
+.other-abnormal-btn.secondary {
+  color: #d93025;
+  background: #fff;
+  border: 1rpx solid rgba(217, 48, 37, 0.35);
+}
+
+.baby-switch-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.38);
+  display: flex;
+  align-items: flex-end;
+}
+
+.baby-switch-sheet {
+  width: 100%;
+  max-height: 78vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 30rpx 28rpx calc(40rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.baby-switch-hd {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.baby-switch-title {
+  flex: 1;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #222;
+}
+
+.baby-switch-close {
+  font-size: 40rpx;
+  color: #aaa;
+  padding: 8rpx;
+}
+
+.baby-switch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.baby-switch-item {
+  display: flex;
+  align-items: center;
+  min-height: 112rpx;
+  padding: 18rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #f0f0f0;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.baby-switch-item.active {
+  border-color: #07c160;
+  background: #f1fbf5;
+}
+
+.baby-switch-avatar {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 18rpx;
+  background: #e8f9ef;
+  color: #07c160;
+  font-size: 38rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.baby-switch-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.baby-switch-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.baby-switch-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6rpx;
+}
+
+.baby-switch-age {
+  font-size: 24rpx;
+  color: #777;
+}
+
+.baby-switch-check {
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  border-radius: 50%;
+  background: #07c160;
+  color: #fff;
+  font-size: 28rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.baby-switch-empty {
+  padding: 34rpx 16rpx 26rpx;
+  text-align: center;
+}
+
+.baby-switch-empty-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.baby-switch-empty-desc {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.baby-switch-add {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  margin-top: 24rpx;
+  border-radius: 16rpx;
+  background: #07c160;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 700;
+  padding: 0;
+}
+
+.baby-switch-add::after {
+  border: none;
+}

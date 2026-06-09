@@ -1,0 +1,327 @@
+<!-- pages/mine/index.wxml -->
+<view class="mine-page">
+
+  <!-- 用户卡片 -->
+  <view class="m-user" bindtap="onUserCardTap">
+    <view class="m-avatar">
+      <image wx:if="{{userInfo.avatarUrl}}" class="m-avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+      <view wx:else class="m-avatar-text">👤</view>
+    </view>
+    <view class="m-user-body">
+      <view class="m-user-name">{{isLogin ? (userInfo.nickName || '微信用户') : '未登录'}}</view>
+      <view class="m-user-tag">{{isLogin ? userRole : (loginLoading ? '登录中...' : '去授权登录')}}</view>
+    </view>
+    <view class="m-user-arrow">›</view>
+  </view>
+
+  <!-- 菜单组：宝宝 -->
+  <view class="m-panel">
+    <view class="m-cell" bindtap="onAddBaby">
+      <view class="m-cell-hd">👶</view>
+      <view class="m-cell-bd">添加宝宝</view>
+      <view wx:if="{{babyList.length}}" class="m-cell-ft">{{babyList.length}}个宝宝</view>
+      <view wx:else class="m-cell-ft">未添加</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+    <view class="m-cell" bindtap="openBabyInfoSheet">
+      <view class="m-cell-hd">📝</view>
+      <view class="m-cell-bd">宝宝信息</view>
+      <view class="m-cell-ft">{{babyName || '查看'}}</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+    <view class="m-cell" bindtap="onFamily">
+      <view class="m-cell-hd">👪</view>
+      <view class="m-cell-bd">家人管理</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 菜单组：宝宝喂养分析 -->
+  <view class="m-panel">
+    <view class="m-cell" bindtap="onSmartAnalysis">
+      <view class="m-cell-hd">析</view>
+      <view class="m-cell-bd">宝宝喂养分析</view>
+      <view class="m-cell-ft">最近一周</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 菜单组：设置 -->
+  <view class="m-panel">
+    <!--
+    <view class="m-cell" bindtap="onSettings">
+      <view class="m-cell-hd">⚙️</view>
+      <view class="m-cell-bd">设置</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+    <view class="m-cell" bindtap="onAgreement">
+      <view class="m-cell-hd">📄</view>
+      <view class="m-cell-bd">服务协议</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+    <view class="m-cell" bindtap="onPrivacy">
+      <view class="m-cell-hd">🔒</view>
+      <view class="m-cell-bd">隐私政策</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+    -->
+    <view class="m-cell">
+      <view class="m-cell-hd">💬</view>
+      <view class="m-cell-bd">意见反馈</view>
+      <view class="m-cell-arrow">›</view>
+      <button class="m-cell-btn-overlay" open-type="feedback"></button>
+    </view>
+    <view class="m-cell" bindtap="onAbout">
+      <view class="m-cell-hd">ℹ️</view>
+      <view class="m-cell-bd">关于</view>
+      <view class="m-cell-ft">v1.0.0</view>
+      <view class="m-cell-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view wx:if="{{isLogin}}" class="m-logout-area">
+    <view class="m-logout-btn" bindtap="onLogout">退出登录</view>
+  </view>
+
+  <!-- ==================== 宝宝喂养分析 ==================== -->
+  <view wx:if="{{showSmartSheet}}" class="m-mask m-smart-mask" bindtap="closeSmartSheet">
+    <view class="m-sheet m-smart-sheet" catchtap="stopTap">
+      <view class="m-sheet-hd">
+        <view class="m-sheet-title">{{smartDetail ? '分析详情' : '宝宝喂养分析'}}</view>
+        <view class="m-sheet-close" bindtap="closeSmartSheet">✕</view>
+      </view>
+
+      <view wx:if="{{!smartDetail}}" class="m-smart-list-wrap">
+        <view class="m-smart-summary">
+          <view class="m-smart-summary-title">{{babyName || '当前宝宝'}}</view>
+          <view class="m-smart-summary-desc">基于所选连续 7 天记录生成喂养、睡眠、健康和成长建议。</view>
+        </view>
+
+        <view class="m-smart-range">
+          <picker mode="date" value="{{smartStartDate}}" end="{{todayStr}}" bindchange="onSmartStartDateChange">
+            <view class="m-smart-date-picker">
+              <view class="m-smart-date-label">开始</view>
+              <view class="m-smart-date-value">{{smartStartDate || '选择日期'}}</view>
+            </view>
+          </picker>
+          <view class="m-smart-range-sep">至</view>
+          <picker mode="date" value="{{smartEndDate}}" end="{{todayStr}}" bindchange="onSmartEndDateChange">
+            <view class="m-smart-date-picker">
+              <view class="m-smart-date-label">结束</view>
+              <view class="m-smart-date-value">{{smartEndDate || '选择日期'}}</view>
+            </view>
+          </picker>
+        </view>
+        <view class="m-smart-range-tip {{smartRangeValid ? '' : 'warn'}}">{{smartRangeTip}}</view>
+
+        <button
+          class="m-smart-generate-btn"
+          loading="{{smartGenerating}}"
+          disabled="{{smartGenerating || !smartRangeValid || !smartCanGenerateRange}}"
+          bindtap="onGenerateSmartAnalysis"
+        >{{smartGenerating ? '正在分析...' : (!smartRangeValid ? '请选择7天范围' : (smartCanGenerateRange ? '生成新的分析' : '该区间已分析'))}}</button>
+
+        <view wx:if="{{smartLoading}}" class="m-smart-empty">正在加载分析记录...</view>
+        <view wx:elif="{{smartRecords.length === 0}}" class="m-smart-empty">
+          <view class="m-smart-empty-title">暂无分析记录</view>
+          <view class="m-smart-empty-desc">点击上方按钮，系统会整理宝宝所选连续 7 天记录并生成宝宝喂养分析。</view>
+        </view>
+        <view wx:else class="m-smart-list">
+          <scroll-view class="m-smart-list-scroll" scroll-y enhanced="{{true}}" show-scrollbar="{{false}}">
+            <block wx:for="{{smartRecords}}" wx:key="id">
+              <view class="m-smart-record" data-id="{{item.id}}" bindtap="onSmartRecordTap">
+                <view class="m-smart-record-head">
+                  <view class="m-smart-record-title">{{item.createdAtLabel || '分析记录'}}</view>
+                  <view class="m-cell-arrow">›</view>
+                </view>
+                <view class="m-smart-record-range">{{item.rangeLabel}}</view>
+                <view wx:if="{{item.dataQualityTip}}" class="m-smart-record-tip">{{item.dataQualityTip}}</view>
+                <view class="m-smart-record-preview">{{item.preview || '点击查看分析内容'}}</view>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+
+      <view wx:else class="m-smart-detail">
+        <view class="m-smart-detail-meta">
+          <view>{{smartDetail.babyName || babyName}}</view>
+          <view>{{smartDetail.rangeLabel}}</view>
+          <view>{{smartDetail.createdAtLabel}}</view>
+          <view wx:if="{{smartDetail.dataQualityTip}}" class="m-smart-detail-tip">{{smartDetail.dataQualityTip}}</view>
+        </view>
+        <scroll-view class="m-smart-detail-scroll" scroll-y enhanced="{{true}}" show-scrollbar="{{false}}">
+          <view class="m-smart-markdown">
+            <block wx:for="{{smartDetail.analysisBlocks}}" wx:key="id">
+              <view wx:if="{{item.isHeading}}" class="m-smart-md-heading {{item.className}}">{{item.text}}</view>
+              <view wx:elif="{{item.isBullet}}" class="m-smart-md-bullet">
+                <view class="m-smart-md-dot"></view>
+                <view class="m-smart-md-bullet-text">{{item.text}}</view>
+              </view>
+              <view wx:else class="m-smart-md-paragraph">{{item.text}}</view>
+            </block>
+          </view>
+        </scroll-view>
+        <button class="m-smart-secondary-btn" bindtap="backToSmartList">返回列表</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ==================== 宝宝信息列表 ==================== -->
+  <view wx:if="{{showBabyInfoSheet}}" class="m-mask" bindtap="closeBabyInfoSheet" catchtouchmove="stopTouchMove">
+    <view class="m-sheet" catchtap="stopTap">
+      <view class="m-sheet-hd">
+        <view class="m-sheet-title">宝宝信息</view>
+        <view class="m-sheet-close" bindtap="closeBabyInfoSheet">✕</view>
+      </view>
+
+      <view wx:if="{{babyList.length === 0}}" class="m-baby-empty">
+        <view class="m-baby-empty-title">还没有宝宝信息</view>
+        <view class="m-baby-empty-desc">先添加宝宝后，就能在这里查看和修改。</view>
+      </view>
+
+      <view wx:else class="m-baby-list">
+        <block wx:for="{{babyList}}" wx:key="id">
+          <view class="m-baby-row" data-id="{{item.id}}" bindtap="onEditBabyTap">
+            <view class="m-baby-row-avatar">
+              <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" />
+              <text wx:else>{{item.gender === 'girl' ? '👧' : '👦'}}</text>
+            </view>
+            <view class="m-baby-row-body">
+              <view class="m-baby-row-name">{{item.name}}</view>
+              <view class="m-baby-row-meta">
+                {{item.gender === 'girl' ? '女宝' : '男宝'}} · {{item.birthDate || '未设置生日'}}
+              </view>
+            </view>
+            <view wx:if="{{item.id === currentBabyId}}" class="m-baby-current">当前</view>
+            <view class="m-cell-arrow">›</view>
+          </view>
+        </block>
+      </view>
+
+      <button class="m-save-btn" bindtap="onAddBaby">添加宝宝</button>
+    </view>
+  </view>
+
+  <!-- ==================== 登录授权弹窗 ==================== -->
+  <view wx:if="{{showLoginSheet}}" class="m-mask" bindtap="closeLoginSheet" catchtouchmove="stopTouchMove">
+    <view class="m-sheet m-login-sheet" catchtap="stopTap">
+      <view class="m-sheet-hd">
+        <view class="m-sheet-title">微信授权登录</view>
+        <view class="m-sheet-close" bindtap="closeLoginSheet">✕</view>
+      </view>
+
+      <view class="m-login-hero">
+        <view class="m-login-mark">👤</view>
+        <view class="m-login-title">授权后开始记录</view>
+        <view class="m-login-desc">用于同步账号信息、展示头像昵称，并保存宝宝成长记录。</view>
+      </view>
+
+      <view class="m-privacy-row" bindtap="onTogglePrivacyAgreement">
+        <view class="m-privacy-checkbox {{agreedPrivacy ? 'checked' : ''}}">
+          <text wx:if="{{agreedPrivacy}}">✓</text>
+        </view>
+        <view class="m-privacy-text">
+          <text>我已阅读并同意</text>
+          <text class="m-privacy-link" catchtap="onOpenPrivacyContract">《用户服务协议》</text>
+          <text>和</text>
+          <text class="m-privacy-link" catchtap="onOpenPrivacyContract">《隐私政策》</text>
+        </view>
+      </view>
+
+      <button
+        class="m-login-btn"
+        loading="{{loginLoading}}"
+        disabled="{{loginLoading || !agreedPrivacy}}"
+        bindtap="onLogin"
+      >{{loginLoading ? '正在登录...' : '微信授权登录'}}</button>
+      <button class="m-login-cancel" disabled="{{loginLoading}}" bindtap="closeLoginSheet">暂不登录</button>
+    </view>
+  </view>
+
+  <!-- ==================== 编辑资料弹窗 ==================== -->
+  <view wx:if="{{showProfileEditor}}" class="m-mask" bindtap="closeProfileEditor" catchtouchmove="stopTouchMove">
+    <view class="m-sheet" catchtap="stopTap">
+      <view class="m-sheet-hd">
+        <view class="m-sheet-title">编辑资料</view>
+        <view class="m-sheet-close" bindtap="closeProfileEditor">✕</view>
+      </view>
+
+      <button class="m-avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{profileForm.avatarUrl}}" class="m-edit-avatar" src="{{profileForm.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="m-edit-avatar m-edit-placeholder">👤</view>
+        <view class="m-avatar-tip">更换头像</view>
+      </button>
+
+      <view class="m-form-item">
+        <view class="m-form-label">昵称</view>
+        <input class="m-form-input" type="nickname" value="{{profileForm.nickName}}" bindinput="onNickNameInput" placeholder="请输入昵称" />
+      </view>
+
+      <button class="m-save-btn" loading="{{profileSaving}}" bindtap="onSaveProfile">保存</button>
+    </view>
+  </view>
+
+  <!-- ==================== 添加宝宝弹窗 ==================== -->
+  <view wx:if="{{showBabyEditor}}" class="m-mask" bindtap="closeBabyEditor" catchtouchmove="stopTouchMove">
+    <view class="m-sheet" catchtap="stopTap">
+      <view class="m-sheet-hd">
+        <view wx:if="{{babyEditorBackToList}}" class="m-sheet-back" bindtap="backToBabyInfoSheet"></view>
+        <view class="m-sheet-title">{{babyForm.id ? '编辑宝宝信息' : '添加宝宝'}}</view>
+        <view class="m-sheet-close" bindtap="closeBabyEditor">✕</view>
+      </view>
+
+      <view class="m-baby-avatar-editor" bindtap="onChooseBabyAvatar">
+        <image wx:if="{{babyForm.avatar}}" class="m-baby-edit-avatar" src="{{babyForm.avatar}}" mode="aspectFill" />
+        <view wx:else class="m-baby-edit-avatar m-baby-avatar-placeholder">{{babyForm.gender === 'girl' ? '👧' : '👦'}}</view>
+        <view class="m-avatar-tip">{{babyAvatarUploading ? '上传中...' : '更换头像'}}</view>
+      </view>
+
+      <view class="m-gender-row">
+        <view class="m-gender-label">性别</view>
+        <view class="m-gender-opts">
+          <view class="m-gender-btn {{babyForm.gender === 'boy' ? 'active' : ''}}" bindtap="onBabyGenderTap" data-gender="boy">👦 男宝</view>
+          <view class="m-gender-btn {{babyForm.gender === 'girl' ? 'active' : ''}}" bindtap="onBabyGenderTap" data-gender="girl">👧 女宝</view>
+        </view>
+      </view>
+
+      <view class="m-form-item">
+        <view class="m-form-label">姓名</view>
+        <input class="m-form-input" value="{{babyForm.name}}" bindinput="onBabyNameInput" placeholder="请输入宝宝姓名" />
+      </view>
+
+      <picker mode="date" value="{{babyForm.birthDate}}" end="{{todayStr}}" bindchange="onBabyBirthChange">
+        <view class="m-form-item">
+          <view class="m-form-label">生日</view>
+          <view class="m-form-picker {{babyForm.birthDate ? '' : 'placeholder'}}">
+            {{babyForm.birthDate || '请选择出生日期'}}
+          </view>
+        </view>
+      </picker>
+
+      <button class="m-save-btn" loading="{{babySaving}}" bindtap="onSaveBaby">保存</button>
+    </view>
+  </view>
+
+  <!-- ==================== 身份选择 ==================== -->
+  <view wx:if="{{showRoleSheet}}" class="m-mask m-role-mask" bindtap="closeRoleSheet" catchtouchmove="stopTouchMove">
+    <view class="m-sheet m-role-sheet" catchtap="stopTap">
+      <view class="m-sheet-hd">
+        <view class="m-sheet-title">{{roleSheetTitle}}</view>
+        <view class="m-sheet-close" bindtap="closeRoleSheet">✕</view>
+      </view>
+      <view class="m-role-desc">{{roleSheetDesc}}</view>
+
+      <picker mode="selector" range="{{familyRoleOptions}}" range-key="name" value="{{selectedRoleIndex}}" bindchange="onRolePickerChange">
+        <view class="m-role-picker">
+          <view class="m-role-picker-label">选择身份</view>
+          <view class="m-role-picker-value">{{familyRoleOptions[selectedRoleIndex].name}} ›</view>
+        </view>
+      </picker>
+
+      <button class="m-save-btn" loading="{{babySaving}}" bindtap="onConfirmRole">确认</button>
+    </view>
+  </view>
+
+</view>

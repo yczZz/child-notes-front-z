@@ -1,0 +1,54 @@
+<!-- components/temperature-form/index.wxml -->
+<view class="temp-form">
+  <!-- 体温输入 + 异常标记开关 -->
+  <view class="temp-input-section">
+    <view class="temp-input-wrap">
+      <view class="label">体温</view>
+      <view class="input-row">
+        <input
+          class="temp-input"
+          type="digit"
+          placeholder="输入体温"
+          value="{{temperature}}"
+          bindinput="onTempInput"
+          adjust-position="{{false}}"
+        />
+        <text class="unit">℃</text>
+      </view>
+    </view>
+
+    <view class="abnormal-toggle {{isAbnormal ? 'active' : ''}}" bindtap="toggleAbnormal">
+      <view class="toggle-dot"></view>
+      <text class="toggle-label">{{isAbnormal ? '已标记异常' : '标记异常'}}</text>
+    </view>
+  </view>
+
+  <!-- 发热警告 -->
+  <view wx:if="{{feverWarning}}" class="fever-warning">
+    ⚠️ 体温 ≥ 37.3℃，保存后将在首页触发发烧追踪
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注（选填）</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <!-- 时间选择 -->
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

@@ -1,0 +1,225 @@
+.gs-panel {
+  margin: 16rpx 24rpx;
+  background: linear-gradient(135deg, #e8f9ef, #f5fdf7);
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}
+
+.gs-panel.sleeping {
+  background: linear-gradient(135deg, #eaf3ff, #f4fbf7 58%, #fff8e8);
+  border: 1rpx solid rgba(91, 141, 239, 0.16);
+  animation: gs-panel-breathe 3.6s ease-in-out infinite;
+}
+
+.gs-top {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 28rpx 0;
+}
+
+.gs-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.gs-emoji {
+  font-size: 64rpx;
+  margin-right: 20rpx;
+}
+
+.gs-sleep-breath {
+  position: relative;
+  width: 78rpx;
+  height: 78rpx;
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gs-breath-ring {
+  position: absolute;
+  width: 62rpx;
+  height: 62rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(91, 141, 239, 0.32);
+  opacity: 0.48;
+  animation: gs-breath-ring 3.2s ease-in-out infinite;
+}
+
+.gs-breath-ring.delay {
+  animation-delay: 1.6s;
+}
+
+.gs-emoji.sleep {
+  position: relative;
+  z-index: 1;
+  width: 58rpx;
+  height: 58rpx;
+  line-height: 58rpx;
+  margin-right: 0;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.78);
+  font-size: 42rpx;
+  animation: gs-breath-icon 3.2s ease-in-out infinite;
+}
+
+.gs-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  overflow-wrap: anywhere;
+}
+
+.gs-sub {
+  font-size: 24rpx;
+  color: #07c160;
+  margin-top: 4rpx;
+  overflow-wrap: anywhere;
+}
+
+.gs-sub.sleeping {
+  color: #5574c8;
+  animation: gs-text-breathe 3.2s ease-in-out infinite;
+}
+
+/* 展开/收起触发器 */
+.gs-expand {
+  margin: 8rpx 28rpx 0;
+}
+
+.gs-expand-trigger {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 0;
+}
+
+.gs-expand-text {
+  font-size: 22rpx;
+  color: #a0c8a8;
+}
+
+.gs-expand-arrow {
+  font-size: 24rpx;
+  color: #a0c8a8;
+  margin-left: 4rpx;
+  transform: rotate(90deg);
+  transition: transform 0.2s;
+}
+
+.gs-expand-arrow.up {
+  transform: rotate(-90deg);
+}
+
+/* 详情内容 */
+.gs-detail {
+  padding-bottom: 8rpx;
+}
+
+.gs-detail-divider {
+  height: 1rpx;
+  background: rgba(7,193,96,0.12);
+  margin: 8rpx 0 16rpx;
+}
+
+.gs-detail-content {
+  font-size: 24rpx;
+  line-height: 1.8;
+  color: #555;
+  padding-right: 4rpx;
+}
+
+.gs-tip {
+  display: flex;
+  align-items: flex-start;
+  margin: 20rpx 24rpx 28rpx;
+  padding: 20rpx 24rpx;
+  background: rgba(255,255,255,0.8);
+  border-radius: 12rpx;
+}
+
+.gs-tip.sleeping {
+  align-items: center;
+  background: rgba(255,255,255,0.72);
+}
+
+.gs-tip-icon {
+  font-size: 32rpx;
+  margin-right: 14rpx;
+  margin-top: 2rpx;
+}
+
+.gs-tip.sleeping .gs-tip-icon {
+  margin-top: 0;
+}
+
+.gs-sleep-tip-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 24rpx;
+  line-height: 1.55;
+  color: #5f6f91;
+  overflow-wrap: anywhere;
+}
+
+.gs-tip-swiper-wrap {
+  flex: 1;
+  min-width: 0;
+  height: 38rpx;
+}
+
+.gs-tip-swiper {
+  width: 100%;
+  height: 38rpx;
+}
+
+.gs-tip-text {
+  display: block;
+  font-size: 24rpx;
+  color: #888;
+  line-height: 1.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes gs-panel-breathe {
+  0%, 100% {
+    box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+  }
+  50% {
+    box-shadow: 0 8rpx 28rpx rgba(91, 141, 239, 0.13);
+  }
+}
+
+@keyframes gs-breath-ring {
+  0%, 100% {
+    transform: scale(0.84);
+    opacity: 0.32;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.78;
+  }
+}
+
+@keyframes gs-breath-icon {
+  0%, 100% {
+    transform: scale(0.96);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes gs-text-breathe {
+  0%, 100% {
+    opacity: 0.74;
+  }
+  50% {
+    opacity: 1;
+  }
+}

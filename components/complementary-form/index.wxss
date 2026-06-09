@@ -1,0 +1,306 @@
+/* components/complementary-form/index.wxss */
+
+.comp-form {
+  padding-bottom: 40rpx;
+}
+
+.section {
+  margin-bottom: 32rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 18rpx;
+}
+
+/* 食物种类 chips */
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.chip {
+  padding: 14rpx 24rpx;
+  border-radius: 8rpx;
+  background: #f5f5f5;
+  font-size: 26rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+}
+
+.chip-delete-entry {
+  background: #fff5f5;
+  border: 2rpx solid rgba(250, 81, 81, 0.35);
+  color: #fa5151;
+}
+
+.chip.active {
+  background: #e8f9ef;
+  color: #07c160;
+  border-color: #07c160;
+}
+
+.chip-custom {
+  background: #fff;
+  color: #07c160;
+  border-color: rgba(7, 193, 96, 0.45);
+}
+
+.chip-custom.active {
+  background: #e8f9ef;
+  border-color: #07c160;
+}
+
+.chip-add {
+  background: #fff;
+  border: 2rpx dashed #ccc;
+  color: #999;
+}
+
+.chip-history {
+  background: #fff;
+  border: 1rpx solid #eee;
+  color: #888;
+  font-size: 24rpx;
+}
+
+.custom-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 16rpx;
+}
+
+.custom-input {
+  flex: 1;
+  height: 72rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+}
+
+.custom-confirm {
+  padding: 14rpx 28rpx;
+  background: #07c160;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.tap-placeholder {
+  height: 0;
+}
+
+/* 通用输入 */
+.field-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+/* 食量 */
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.amount-input {
+  flex: 1;
+  height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.unit-options {
+  display: flex;
+  gap: 10rpx;
+}
+
+.unit-btn {
+  padding: 14rpx 20rpx;
+  border-radius: 8rpx;
+  background: #f5f5f5;
+  font-size: 26rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+}
+
+.unit-btn.active {
+  background: #e8f9ef;
+  color: #07c160;
+  border-color: #07c160;
+}
+
+/* 历史记录 */
+.history-area {
+  margin-top: 16rpx;
+}
+
+.history-label {
+  font-size: 22rpx;
+  color: #bbb;
+  margin-bottom: 10rpx;
+}
+
+/* 备注 */
+.note-input {
+  width: 100%;
+  min-height: 100rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 18rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  margin-bottom: 16rpx;
+}
+
+/* 照片 */
+.photo-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.photo-thumb {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-thumb image {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-del {
+  position: absolute;
+  top: 4rpx;
+  right: 4rpx;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-photo-btn {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  border: 2rpx dashed #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.add-icon {
+  font-size: 48rpx;
+  color: #ccc;
+  line-height: 1;
+}
+
+.add-text {
+  font-size: 20rpx;
+  color: #ccc;
+  margin-top: 4rpx;
+}
+
+/* 宝宝反应 */
+.reaction-grid {
+  display: flex;
+  gap: 16rpx;
+}
+
+.reaction-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 8rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+  border: 2rpx solid transparent;
+}
+
+.reaction-item.active {
+  background: #e8f9ef;
+  border-color: #07c160;
+}
+
+.reaction-item.danger.active {
+  background: #fff0f0;
+  border-color: #e74c3c;
+}
+
+.reaction-emoji {
+  font-size: 40rpx;
+  margin-bottom: 6rpx;
+}
+
+.reaction-label {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.reaction-item.active .reaction-label {
+  color: #07c160;
+  font-weight: 600;
+}
+
+.reaction-item.danger.active .reaction-label {
+  color: #e74c3c;
+}
+
+/* 时间选择 */
+.input-group {
+  margin-bottom: 30rpx;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.picker-value {
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 保存按钮 */
+.save-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #07c160;
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  margin-top: 20rpx;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}

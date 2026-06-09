@@ -1,0 +1,228 @@
+/* components/baby-status-bar/index.wxss */
+
+.bs-panel {
+  margin: 24rpx 24rpx 0;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}
+
+/* 头像区 */
+.bs-top {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 28rpx 20rpx;
+}
+
+.bs-baby-entry {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.bs-baby-entry:active {
+  opacity: 0.82;
+}
+
+.bs-avatar {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.bs-avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.bs-avatar-text {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #07c160, #06ad56);
+  color: #fff;
+  font-size: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bs-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.bs-name {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6rpx;
+}
+
+.bs-age {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #07c160;
+  background: rgba(7, 193, 96, 0.08);
+  padding: 6rpx 18rpx;
+  border-radius: 24rpx;
+  font-weight: 500;
+}
+
+.bs-action-group {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-shrink: 0;
+  margin-left: 18rpx;
+}
+
+.bs-action-entry {
+  width: 88rpx;
+  height: 104rpx;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bs-action-entry.stats {
+  border: 2rpx solid #e8f5ff;
+  background: #f5fbff;
+}
+
+.bs-action-entry.sign {
+  border: 2rpx solid #ffe7d6;
+  background: #fff7f1;
+}
+
+.bs-action-icon {
+  font-size: 34rpx;
+  line-height: 1;
+  margin-bottom: 8rpx;
+}
+
+.bs-action-text {
+  font-size: 22rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.bs-action-entry.stats .bs-action-text {
+  color: #0a84ff;
+}
+
+.bs-action-entry.sign .bs-action-text,
+.bs-action-entry.sign .bs-action-icon {
+  color: #e86f24;
+}
+
+/* 统计区 */
+.bs-stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rpx minmax(0, 1fr);
+  column-gap: 0;
+  margin: 0 20rpx 24rpx;
+  padding: 20rpx 0;
+  background: #f9fafb;
+  border-radius: 14rpx;
+}
+
+.bs-stat-col {
+  min-width: 0;
+  padding: 0 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.bs-stat-split {
+  background: #e8e8e8;
+}
+
+.bs-mini-card {
+  display: flex;
+  align-items: center;
+  min-height: 76rpx;
+  padding: 12rpx;
+  border-radius: 12rpx;
+  background: #fff;
+  box-shadow: inset 0 0 0 1rpx rgba(0,0,0,0.03);
+  min-width: 0;
+}
+
+.bs-mini-card:active {
+  background: #f2f4f5;
+}
+
+.bs-mini-card.feed {
+  border-left: 6rpx solid #ff8a3d;
+}
+
+.bs-mini-card.sleep {
+  border-left: 6rpx solid #6b8cff;
+}
+
+.bs-mini-card.diaper {
+  border-left: 6rpx solid #f7b731;
+}
+
+.bs-mini-card.growth {
+  border-left: 6rpx solid #00a0a0;
+}
+
+.bs-mini-icon {
+  font-size: 32rpx;
+  line-height: 1;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+
+.bs-mini-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.bs-mini-label {
+  font-size: 22rpx;
+  color: #888;
+  line-height: 1.1;
+}
+
+.bs-mini-values {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  row-gap: 2rpx;
+  min-width: 0;
+}
+
+.bs-mini-main {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #333;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.bs-mini-sub {
+  font-size: 20rpx;
+  color: #999;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.growth-values {
+  gap: 6rpx;
+}

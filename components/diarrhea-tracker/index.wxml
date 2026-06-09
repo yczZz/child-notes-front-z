@@ -1,0 +1,38 @@
+<!-- components/diarrhea-tracker/index.wxml -->
+<view class="dt-panel" wx:if="{{visible}}">
+  <view class="dt-hd">
+    <view class="dt-hd-left">
+      <text class="dt-icon">🤢</text>
+      <text class="dt-title">腹泻追踪</text>
+    </view>
+    <text class="dt-tag" wx:if="{{diarrheaTypes}}">{{diarrheaTypes}}</text>
+  </view>
+
+  <view class="dt-bd">
+    <view class="dt-item">
+      <view class="dt-label">最近一次</view>
+      <view class="dt-value warn">{{timeSince}}</view>
+    </view>
+    <view class="dt-split"></view>
+    <view class="dt-item">
+      <view class="dt-label">类型</view>
+      <view class="dt-value">{{diarrheaTypes || '--'}}</view>
+    </view>
+  </view>
+
+  <view class="dt-tips">
+    <view class="dt-tip">💧 少量多次补充水分或口服补液盐</view>
+    <view class="dt-tip">🍼 母乳宝宝继续按需喂养</view>
+    <view class="dt-tip">🧴 勤换尿布，涂抹护臀膏</view>
+  </view>
+
+  <view class="dt-actions">
+    <view class="dt-btn" bindtap="onRecordDiaper">记录尿布</view>
+    <view class="dt-btn" bindtap="onRecordMaternalFood">妈妈饮食</view>
+    <view class="dt-btn dt-btn-fill" bindtap="onRecordAbnormal">记录异常</view>
+  </view>
+
+  <view class="dt-recovered">
+    <text class="dt-recovered-btn" bindtap="onRecovered">✅ 已好转</text>
+  </view>
+</view>

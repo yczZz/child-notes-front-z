@@ -1,0 +1,85 @@
+<!-- components/activity-tracker/index.wxml -->
+<view class="at-panel">
+  <view class="at-header">
+    <view class="at-header-left">
+      <text class="at-icon">🎯</text>
+      <text class="at-title">活动追踪</text>
+    </view>
+    <view class="at-header-btns">
+      <view class="at-btn-outline" bindtap="onToggleExpanded">{{expanded ? '收起' : '展开'}}</view>
+      <view class="at-btn-outline" bindtap="onToggleDetail">详情</view>
+      <view class="at-btn" bindtap="onRecord">记录</view>
+    </view>
+  </view>
+
+  <view wx:if="{{lastActivity && !expanded}}" class="at-compact">
+    <view class="at-compact-main">
+      <text class="at-compact-label">最近活动</text>
+      <text class="at-compact-name">{{lastActivity.name}}</text>
+    </view>
+    <text class="at-compact-since">{{timeSince}}</text>
+  </view>
+
+  <view wx:elif="{{lastActivity}}" class="at-body">
+    <view class="at-row">
+      <view class="at-col">
+        <text class="at-label">最近活动</text>
+        <text class="at-name">{{lastActivity.name}}</text>
+      </view>
+      <view class="at-col right">
+        <text class="at-label">距上次</text>
+        <text class="at-since">{{timeSince}}</text>
+      </view>
+    </view>
+    <view class="at-meta">
+      <view class="at-cat {{lastActivity.category === 'outdoor' ? 'outdoor' : 'indoor'}}">
+        {{lastActivity.category === 'outdoor' ? '🌳 室外' : '🏠 室内'}}
+      </view>
+      <text class="at-dur" wx:if="{{lastActivity.duration}}">⏱ {{lastActivity.duration}}分钟</text>
+      <text class="at-meta-time">{{lastActivity.time}}</text>
+    </view>
+  </view>
+
+  <view wx:else class="at-empty">
+    暂无活动记录，点击「记录」添加
+  </view>
+
+  <!-- 详情弹窗 -->
+  <view wx:if="{{showDetail}}" class="at-mask" bindtap="onCloseDetail">
+    <view class="at-sheet" catchtap="stopTap">
+      <view class="at-sheet-hd">
+        <text class="at-sheet-title">活动记录</text>
+        <text class="at-sheet-close" bindtap="onCloseDetail">✕</text>
+      </view>
+
+      <view wx:if="{{timelineGroups.length > 0}}" class="at-timeline">
+        <block wx:for="{{timelineGroups}}" wx:key="label" wx:for-item="group">
+          <view class="at-tl-date-row">
+            <text class="at-tl-date-text">{{group.label}}</text>
+          </view>
+          <view
+            wx:for="{{group.items}}"
+            wx:key="id"
+            wx:for-item="item"
+            class="at-tl-item {{group.isToday ? 'today' : ''}}"
+          >
+            <view class="at-tl-dot"></view>
+            <view class="at-tl-card">
+              <view class="at-tl-top">
+                <text class="at-tl-name">{{item.name}}</text>
+                <text class="at-tl-cat">{{item.category === 'outdoor' ? '🌳' : '🏠'}}</text>
+              </view>
+              <view class="at-tl-bottom">
+                <text class="at-tl-time">{{item.time || ''}}</text>
+                <text class="at-tl-dur" wx:if="{{item.duration}}">⏱ {{item.duration}}分钟</text>
+              </view>
+              <view wx:if="{{item.note}}" class="at-tl-note">{{item.note}}</view>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <view wx:else class="at-tl-empty">暂无活动记录</view>
+    </view>
+  </view>
+</view>

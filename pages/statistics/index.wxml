@@ -1,0 +1,134 @@
+<view class="stats-page">
+  <view class="stats-head">
+    <view>
+      <view class="stats-title">统计分析</view>
+      <view class="stats-subtitle">{{startDate}} 至 {{endDate}}</view>
+    </view>
+    <view class="stats-badge">{{currentType.label}}</view>
+  </view>
+
+  <view class="type-panel">
+    <view class="type-row">
+      <view
+        wx:for="{{typeOptions}}"
+        wx:key="key"
+        class="type-chip {{selectedType === item.key ? 'active' : ''}}"
+        data-type="{{item.key}}"
+        bindtap="selectType"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <view class="range-panel">
+    <view class="range-row">
+      <view
+        wx:for="{{rangeOptions}}"
+        wx:key="key"
+        class="range-chip {{selectedRange === item.key ? 'active' : ''}}"
+        data-range="{{item.key}}"
+        bindtap="selectRange"
+      >{{item.label}}</view>
+    </view>
+    <view class="date-filter" wx:if="{{selectedRange === 'day'}}">
+      <picker mode="date" fields="month" value="{{selectedMonth}}" end="{{todayMonth}}" bindchange="onDayMonthChange">
+        <view class="date-field">{{selectedMonth}}</view>
+      </picker>
+    </view>
+    <view class="date-filter" wx:elif="{{selectedRange === 'month'}}">
+      <picker mode="date" fields="year" value="{{selectedYear}}" end="{{todayYear}}" bindchange="onMonthChange">
+        <view class="date-field">{{selectedYear}}</view>
+      </picker>
+    </view>
+    <view class="date-filter" wx:elif="{{selectedRange === 'range'}}">
+      <picker mode="date" value="{{startDate}}" end="{{today}}" bindchange="onStartDateChange">
+        <view class="date-field">{{startDate}}</view>
+      </picker>
+      <view class="date-sep">至</view>
+      <picker mode="date" value="{{endDate}}" end="{{today}}" bindchange="onEndDateChange">
+        <view class="date-field">{{endDate}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="chart-panel">
+    <view wx:if="{{calendarVisible && !loading}}" class="calendar-chart {{calendarModeClass}}">
+      <view class="calendar-head">
+        <view>
+          <view class="calendar-title">{{calendarTitle}}</view>
+          <view class="calendar-subtitle">{{calendarSubtitle}}</view>
+        </view>
+        <view class="calendar-badge">{{currentType.label}}</view>
+      </view>
+      <view wx:if="{{selectedRange === 'day'}}" class="calendar-week-row">
+        <text wx:for="{{calendarWeekDays}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="calendar-grid">
+        <view
+          wx:for="{{calendarCells}}"
+          wx:key="key"
+          class="calendar-cell {{item.empty ? 'empty' : ''}} {{item.isToday ? 'today' : ''}} {{item.isFuture ? 'future' : ''}}"
+          style="{{item.style}}"
+        >
+          <text wx:if="{{!item.empty}}" class="calendar-cell-label">{{item.label}}</text>
+          <text wx:if="{{item.valueText}}" class="calendar-cell-value">{{item.valueText}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="chart-hd">
+      <view>
+        <view class="chart-title">{{currentType.label}}趋势</view>
+        <view class="chart-unit">单位：{{currentType.unit}}</view>
+      </view>
+      <view class="chart-total">{{totalValueText}}</view>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    <view wx:else class="xy-chart">
+      <view class="y-axis">
+        <text wx:for="{{yAxisLabels}}" wx:key="*this">{{item}}</text>
+      </view>
+      <scroll-view class="chart-scroll" scroll-x enhanced show-scrollbar="{{false}}" scroll-left="{{chartScrollLeft}}" scroll-with-animation="{{true}}">
+        <view class="chart {{chartModeClass}}">
+          <view class="plot-area">
+            <view class="grid-line grid-top"></view>
+            <view class="grid-line grid-mid"></view>
+            <view class="x-axis"></view>
+            <view class="bar-wrap {{item.isToday ? 'today' : ''}}" wx:for="{{chartBars}}" wx:key="date">
+              <view
+                class="bar"
+                style="height: {{item.height}}%; background: {{currentType.color}};"
+              ></view>
+              <view class="bar-label">{{item.label}}</view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view class="summary-grid">
+    <view class="summary-card">
+      <text class="summary-label">合计</text>
+      <text class="summary-value">{{totalValueText}}</text>
+    </view>
+    <view class="summary-card">
+      <text class="summary-label">{{averageLabel}}</text>
+      <text class="summary-value">{{averageValueText}}</text>
+    </view>
+    <view class="summary-card">
+      <text class="summary-label">峰值</text>
+      <text class="summary-value">{{maxValueText}}</text>
+    </view>
+  </view>
+
+  <view class="detail-panel">
+    <view class="detail-title">{{currentType.label}}明细</view>
+    <view class="detail-grid">
+      <view class="detail-item" wx:for="{{summaryItems}}" wx:key="label">
+        <text class="detail-label">{{item.label}}</text>
+        <text class="detail-value">{{item.value}}</text>
+      </view>
+    </view>
+  </view>
+</view>

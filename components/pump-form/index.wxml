@@ -1,0 +1,89 @@
+<!-- components/pump-form/index.wxml -->
+<view class="pump-form">
+
+  <!-- 吸奶时长 -->
+  <view class="section">
+    <view class="section-title">⏱ 吸奶时长（分钟）</view>
+    <view class="dual-input">
+      <view class="dual-item">
+        <view class="dual-label">左侧</view>
+        <input
+          class="field-input"
+          type="digit"
+          placeholder="分钟"
+          value="{{leftDuration}}"
+          bindinput="onLeftDurationInput"
+          adjust-position="{{false}}"
+        />
+      </view>
+      <view class="dual-item">
+        <view class="dual-label">右侧</view>
+        <input
+          class="field-input"
+          type="digit"
+          placeholder="分钟"
+          value="{{rightDuration}}"
+          bindinput="onRightDurationInput"
+          adjust-position="{{false}}"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 吸奶奶量 -->
+  <view class="section">
+    <view class="section-title">🍶 吸奶奶量（ml）</view>
+    <view class="dual-input">
+      <view class="dual-item">
+        <view class="dual-label">左侧</view>
+        <input
+          class="field-input"
+          type="digit"
+          placeholder="毫升"
+          value="{{leftAmount}}"
+          bindinput="onLeftAmountInput"
+          adjust-position="{{false}}"
+        />
+      </view>
+      <view class="dual-item">
+        <view class="dual-label">右侧</view>
+        <input
+          class="field-input"
+          type="digit"
+          placeholder="毫升"
+          value="{{rightAmount}}"
+          bindinput="onRightAmountInput"
+          adjust-position="{{false}}"
+        />
+      </view>
+    </view>
+    <view class="total-row">
+      <view class="total-label">总奶量</view>
+      <view class="total-value">{{totalAmount || '—'}} ml</view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <!-- 时间选择 -->
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

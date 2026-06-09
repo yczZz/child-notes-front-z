@@ -1,0 +1,173 @@
+/* components/sleep-form/index.wxss */
+
+.sleep-form {
+  padding-bottom: 40rpx;
+}
+
+.timer-section {
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+.timer-label {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+}
+
+.timer-display {
+  font-size: 84rpx;
+  font-weight: bold;
+  color: #ccc;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 30rpx;
+  transition: color 0.3s;
+}
+
+.timer-display.active {
+  color: #07c160;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.timer-main-btn {
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 32rpx;
+  color: #fff;
+  border: none;
+}
+
+.timer-main-btn.start {
+  background: linear-gradient(135deg, #07c160, #06ad56);
+  box-shadow: 0 8rpx 30rpx rgba(7, 193, 96, 0.3);
+}
+
+.timer-main-btn.disabled {
+  color: #8b8b8b;
+  background: #f0f0f0;
+  box-shadow: none;
+}
+
+.timer-main-btn[disabled] {
+  opacity: 1;
+}
+
+.timer-main-btn.stop {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+  animation: flash 1.2s infinite;
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; box-shadow: 0 8rpx 30rpx rgba(255, 107, 107, 0.4); }
+  50% { opacity: 0.85; box-shadow: 0 16rpx 50rpx rgba(255, 107, 107, 0.6); }
+}
+
+.btn-icon {
+  font-size: 64rpx;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+/* 手动补记 */
+.manual-section {
+  margin-top: 40rpx;
+}
+
+.divider {
+  text-align: center;
+  color: #ccc;
+  font-size: 24rpx;
+  margin-bottom: 30rpx;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 120rpx;
+  height: 1rpx;
+  background: #eee;
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.manual-fields {
+  margin-bottom: 20rpx;
+}
+
+.input-group {
+  margin-bottom: 24rpx;
+}
+
+.note-input {
+  width: 100%;
+  min-height: 120rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 18rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.note-input.disabled {
+  color: #999;
+  background: #f7f7f7;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.picker-value {
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.calc-duration {
+  text-align: center;
+  font-size: 28rpx;
+  color: #07c160;
+  padding: 16rpx;
+  background: #e8f9ef;
+  border-radius: 8rpx;
+  margin-top: 8rpx;
+}
+
+.save-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #07c160;
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.manual-save {
+  margin-top: 16rpx;
+}

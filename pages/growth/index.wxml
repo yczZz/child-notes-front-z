@@ -1,0 +1,80 @@
+<!-- pages/growth/index.wxml -->
+<view class="growth-page">
+
+  <view class="g-header">
+    <view class="g-header-icon">📆</view>
+    <view class="g-header-title">成长记录</view>
+    <view class="g-header-sub">记录宝宝每一个重要时刻</view>
+  </view>
+
+  <view class="g-timeline">
+    <block wx:for="{{milestones}}" wx:key="id">
+      <view class="g-node">
+        <view class="g-date-badge"><text>{{item.date}}</text></view>
+        <view class="g-card" data-id="{{item.id}}" bindtap="onEdit">
+          <view class="g-card-title">{{item.title}}</view>
+          <view wx:if="{{item.content}}" class="g-card-text">{{item.content}}</view>
+          <view wx:if="{{item.photos && item.photos.length}}" class="g-card-imgs">
+            <image wx:for="{{item.photos}}" wx:key="index" wx:for-item="p" src="{{p}}" mode="aspectFill" class="g-img" data-url="{{p}}" catchtap="previewPhoto" />
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="g-node g-node-add">
+      <view class="g-date-badge g-badge-add"><text class="g-plus">+</text></view>
+      <view class="g-card g-card-add" bindtap="onAdd">
+        <text class="g-add-text">记录成长时刻</text>
+      </view>
+    </view>
+
+    <view class="g-line-end"></view>
+  </view>
+
+  <!-- 编辑表单弹窗 -->
+  <view wx:if="{{showForm}}" class="g-mask" bindtap="closeForm">
+    <view class="g-sheet" catchtap="stopTap">
+      <view class="g-sheet-hd">
+        <text class="g-sheet-title">{{editing ? '编辑' : '添加'}}成长时刻</text>
+        <text class="g-sheet-close" bindtap="closeForm">✕</text>
+      </view>
+
+      <view class="g-form-item">
+        <view class="g-form-label">标题 <text class="req">*</text></view>
+        <input class="g-form-input" placeholder="如：满月、百天、第一次翻身..." value="{{formData.title}}" data-field="title" bindinput="onFieldInput" maxlength="40" />
+      </view>
+
+      <view class="g-form-item">
+        <view class="g-form-label">日期 <text class="req">*</text></view>
+        <picker mode="date" value="{{formData.date}}" bindchange="onDateChange">
+          <view class="g-form-picker {{formData.date ? '' : 'placeholder'}}">{{formData.date || '选择日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="g-form-item">
+        <view class="g-form-label">正文</view>
+        <textarea class="g-form-textarea" placeholder="写下宝宝的变化和你的心情..." value="{{formData.content}}" data-field="content" bindinput="onFieldInput" maxlength="500" auto-height />
+      </view>
+
+      <view class="g-form-item">
+        <view class="g-form-label">照片（最多4张）</view>
+        <view class="g-photo-grid">
+          <block wx:for="{{formData.photos}}" wx:key="index">
+            <view class="g-photo-item">
+              <image src="{{item}}" mode="aspectFill" />
+              <view class="g-photo-del" catchtap="removePhoto" data-index="{{index}}">✕</view>
+            </view>
+          </block>
+          <view wx:if="{{formData.photos.length < 4}}" class="g-photo-add" bindtap="addPhoto">
+            <text class="add-plus">+</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="g-save-btn" bindtap="onSave">保存</button>
+    </view>
+  </view>
+
+  <img-preview visible="{{previewVisible}}" src="{{previewSrc}}" bind:close="onClosePreview" />
+
+</view>

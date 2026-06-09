@@ -1,0 +1,142 @@
+<!-- components/complementary-form/index.wxml -->
+<view class="comp-form">
+
+  <!-- 辅食种类 -->
+  <view class="section">
+    <view class="section-title">🥣 辅食种类（多选）</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{defaultFoodOptions}}"
+        wx:key="name"
+        class="chip {{item.selected ? 'active' : ''}}"
+        bindtap="toggleFood"
+        data-value="{{item.name}}"
+      >{{item.name}}</view>
+      <view
+        wx:for="{{backendCustomFoodOptions}}"
+        wx:key="name"
+        class="chip chip-custom {{item.selected ? 'active' : ''}}"
+        bindtap="toggleBackendCustom"
+        data-value="{{item.name}}"
+      >{{item.name}}</view>
+      <view
+        wx:for="{{localCustomFoodOptions}}"
+        wx:key="name"
+        class="chip chip-custom {{item.selected ? 'active' : ''}}"
+        bindtap="toggleLocalCustom"
+        data-value="{{item.name}}"
+      >{{item.name}}</view>
+      <view class="chip chip-add" bindtap="tapAddCustom">
+        <text>{{showCustomInput ? '自定义' : '+ 自定义'}}</text>
+      </view>
+      <view class="chip chip-delete-entry" bindtap="deleteBackendCustom">删除</view>
+    </view>
+    <view wx:if="{{showCustomInput}}" class="custom-row">
+      <input
+        class="custom-input"
+        placeholder="输入食物名称"
+        value="{{customFoodValue}}"
+        bindinput="onCustomFoodInput"
+        confirm-type="done"
+        bindconfirm="addCustomFood"
+        adjust-position="{{false}}"
+      />
+      <view class="custom-confirm" bindtap="addCustomFood">添加</view>
+    </view>
+  </view>
+
+  <!-- 性状 -->
+  <view class="section">
+    <view class="section-title">🍽 性状</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{textureOptions}}"
+        wx:key="*this"
+        class="chip {{texture === item ? 'active' : ''}}"
+        bindtap="selectTexture"
+        data-value="{{item}}"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 辅食名称 -->
+  <view class="section">
+    <view class="section-title">📝 辅食名称</view>
+    <input class="field-input" placeholder="如：胡萝卜米糊、土豆泥..." value="{{foodName}}" bindinput="onFoodNameInput" adjust-position="{{false}}" />
+    <view wx:if="{{foodNameHistory.length > 0}}" class="history-area">
+      <view class="history-label">最近用过</view>
+      <view class="chip-grid">
+        <view
+          wx:for="{{foodNameHistory}}"
+          wx:key="*this"
+          wx:if="{{index < 6}}"
+          class="chip chip-history"
+          bindtap="selectFoodName"
+          data-name="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 食量 -->
+  <view class="section">
+    <view class="section-title">⚖ 食量</view>
+    <view class="amount-row">
+      <input class="amount-input" type="digit" placeholder="数量" value="{{amount}}" bindinput="onAmountInput" adjust-position="{{false}}" />
+      <view class="unit-options">
+        <view
+          wx:for="{{amountUnits}}"
+          wx:key="*this"
+          class="unit-btn {{amountUnit === item ? 'active' : ''}}"
+          bindtap="selectUnit"
+          data-unit="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 & 照片 -->
+  <view class="section">
+    <view class="section-title">📎 备注 & 照片</view>
+    <textarea class="note-input" placeholder="补充说明..." value="{{note}}" bindinput="onNoteInput" maxlength="300" auto-height adjust-position="{{false}}" />
+    <view class="photo-area">
+      <view wx:for="{{photos}}" wx:key="index" class="photo-thumb">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="photo-del" bindtap="removePhoto" data-index="{{index}}">✕</view>
+      </view>
+      <view wx:if="{{photos.length < 9}}" class="add-photo-btn" bindtap="addPhoto">
+        <text class="add-icon">+</text>
+        <text class="add-text">{{uploading ? '上传中' : '拍照'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 宝宝反应 -->
+  <view class="section">
+    <view class="section-title">😊 宝宝反应</view>
+    <view class="reaction-grid">
+      <view
+        wx:for="{{reactionOptions}}"
+        wx:key="*this"
+        class="reaction-item {{reaction === item ? 'active' : ''}} {{item === '过敏' || item === '拉肚子' || item === '呕吐' ? 'danger' : ''}}"
+        bindtap="selectReaction"
+        data-value="{{item}}"
+      >
+        <view class="reaction-emoji">
+          {{item === '喜欢' ? '😋' : item === '正常' ? '😐' : item === '不喜欢' ? '😣' : item === '过敏' ? '🤧' : item === '拉肚子' ? '🤢' : '🤮'}}
+        </view>
+        <view class="reaction-label">{{item}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 记录时间 -->
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

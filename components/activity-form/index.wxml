@@ -1,0 +1,69 @@
+<!-- components/activity-form/index.wxml -->
+<view class="af-form">
+  <!-- 类别切换 -->
+  <view class="af-tabs">
+    <view class="af-tab {{category === 'indoor' ? 'active' : ''}}" bindtap="switchCategory" data-cat="indoor">🏠 室内活动</view>
+    <view class="af-tab {{category === 'outdoor' ? 'active' : ''}}" bindtap="switchCategory" data-cat="outdoor">🌳 室外活动</view>
+  </view>
+
+  <!-- 预设 + 自定义活动 -->
+  <view class="section">
+    <view class="label">{{category === 'indoor' ? '室内' : '室外'}}活动</view>
+    <view class="chip-grid">
+      <view
+        wx:for="{{presets}}"
+        wx:key="*this"
+        class="chip {{selectedName === item && !customSelected ? 'active' : ''}}"
+        bindtap="selectName"
+        data-name="{{item}}"
+        data-custom="false"
+      >{{item}}</view>
+      <view
+        wx:for="{{customItems}}"
+        wx:key="*this"
+        class="chip chip-custom {{selectedName === item && customSelected ? 'active' : ''}}"
+        bindtap="selectName"
+        data-name="{{item}}"
+        data-custom="true"
+      >{{item}}</view>
+      <view class="chip chip-add {{showCustom ? 'active' : ''}}" bindtap="onCustomTap">
+        {{showCustom ? '自定义' : '+ 自定义'}}
+      </view>
+      <view class="chip chip-delete-entry" bindtap="deleteCustom">删除</view>
+    </view>
+    <view wx:if="{{showCustom}}" class="custom-row">
+      <input
+        class="custom-input"
+        placeholder="输入活动名称"
+        value="{{customInput}}"
+        bindinput="onCustomInput"
+        confirm-type="done"
+        bindconfirm="addCustom"
+        adjust-position="{{false}}"
+      />
+      <view class="custom-confirm" bindtap="addCustom">添加</view>
+    </view>
+  </view>
+
+  <!-- 时长 -->
+  <view class="input-group">
+    <view class="label">活动时长（分钟）</view>
+    <input class="field-input" type="digit" placeholder="请输入时长" value="{{duration}}" bindinput="onDurationInput" adjust-position="{{false}}" />
+  </view>
+
+  <!-- 时间 -->
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注</view>
+    <textarea class="note-input" placeholder="补充说明..." value="{{note}}" bindinput="onNoteInput" maxlength="200" auto-height adjust-position="{{false}}" />
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

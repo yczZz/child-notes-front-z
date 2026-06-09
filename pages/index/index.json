@@ -1,0 +1,25 @@
+{
+  "navigationBarTitleText": "成长记录",
+  "usingComponents": {
+    "baby-status-bar": "/components/baby-status-bar/index",
+    "quick-actions": "/components/quick-actions/index",
+    "record-drawer": "/components/record-drawer/index",
+    "feed-form": "/components/feed-form/index",
+    "diaper-form": "/components/diaper-form/index",
+    "sleep-form": "/components/sleep-form/index",
+    "temperature-form": "/components/temperature-form/index",
+    "supplement-form": "/components/supplement-form/index",
+    "growth-form": "/components/growth-form/index",
+    "pump-form": "/components/pump-form/index",
+    "complementary-form": "/components/complementary-form/index",
+    "maternal-food-form": "/components/maternal-food-form/index",
+    "abnormal-form": "/components/abnormal-form/index",
+    "fever-tracker": "/components/fever-tracker/index",
+    "good-status": "/components/good-status/index",
+    "diarrhea-tracker": "/components/diarrhea-tracker/index",
+    "vaccine-tracker": "/components/vaccine-tracker/index",
+    "vaccine-form": "/components/vaccine-form/index",
+    "activity-tracker": "/components/activity-tracker/index",
+    "activity-form": "/components/activity-form/index"
+  }
+}

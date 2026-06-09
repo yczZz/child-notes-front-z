@@ -1,0 +1,53 @@
+<!-- pages/baby-setup/index.wxml -->
+<view class="setup-page">
+
+  <view class="setup-card">
+    <!-- 头部引导 -->
+    <view class="setup-header">
+      <view class="setup-icon">🍼</view>
+      <view class="setup-title">欢迎使用成长记录</view>
+      <view class="setup-desc">请先添加宝宝信息，再开始记录吧</view>
+    </view>
+
+    <!-- 性别选择 -->
+    <view class="gender-switch">
+      <view class="gender-label">性别</view>
+      <view class="gender-options">
+        <view
+          class="gender-btn {{form.gender === 'boy' ? 'active' : ''}}"
+          bindtap="onGenderTap"
+          data-gender="boy"
+        >👦 男宝</view>
+        <view
+          class="gender-btn {{form.gender === 'girl' ? 'active' : ''}}"
+          bindtap="onGenderTap"
+          data-gender="girl"
+        >👧 女宝</view>
+      </view>
+    </view>
+
+    <!-- 姓名 -->
+    <view class="form-row">
+      <view class="form-label">姓名</view>
+      <input class="form-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入宝宝姓名或小名" maxlength="20" />
+    </view>
+
+    <!-- 出生日期 -->
+    <picker mode="date" value="{{form.birthDate}}" end="{{todayStr}}" bindchange="onBirthChange">
+      <view class="form-row">
+        <view class="form-label">生日</view>
+        <view class="form-input picker-val {{form.birthDate ? '' : 'placeholder'}}">
+          {{form.birthDate || '请选择出生日期'}}
+        </view>
+        <view class="form-arrow">›</view>
+      </view>
+    </picker>
+
+    <!-- 保存按钮 -->
+    <button class="save-btn" loading="{{saving}}" bindtap="onSave">开始记录</button>
+
+    <!-- 跳过 -->
+    <view class="skip-link" bindtap="onSkip">稍后再说</view>
+  </view>
+
+</view>

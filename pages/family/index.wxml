@@ -1,0 +1,82 @@
+<view class="family-page">
+  <view wx:if="{{loading && familyMembers.length === 0 && familyGroups.length === 0}}" class="family-state">
+    <view class="family-state-title">正在加载</view>
+    <view class="family-state-desc">正在同步家人信息</view>
+  </view>
+
+  <view wx:elif="{{!loading && familyMembers.length === 0 && familyGroups.length === 0}}" class="family-state">
+    <view class="family-state-title">还没有宝宝</view>
+    <view class="family-state-desc">添加宝宝后，会在这里看到家人信息和邀请入口</view>
+    <button class="family-empty-btn" bindtap="onGoAddBaby">去添加宝宝</button>
+  </view>
+
+  <view wx:else>
+    <view class="family-list">
+      <view
+        wx:for="{{familyMembers}}"
+        wx:key="memberKey"
+        class="family-member"
+      >
+        <view class="family-member-avatar">
+          <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+          <text wx:else>👤</text>
+        </view>
+        <view class="family-member-body">
+          <view class="family-member-top">
+            <view class="family-member-name">{{item.mine ? '我' : (item.nickName || '家人')}}</view>
+            <view class="family-member-role">{{item.roleName || '家人'}}</view>
+            <view wx:if="{{familyGroups.length > 1}}" class="family-member-baby-tag">{{item.babyNamesText || item.babyName}}</view>
+          </view>
+          <view class="family-member-time">最近登录：{{item.lastLoginText || '从未登录'}}</view>
+        </view>
+        <view wx:if="{{item.owner}}" class="family-owner-tag">创建者</view>
+        <view wx:elif="{{item.mine}}" class="family-role-btn" data-member-key="{{item.memberKey}}" data-role-code="{{item.roleCode}}" bindtap="openRoleSheet">修改身份</view>
+      </view>
+    </view>
+
+    <view class="family-invite-area">
+      <button class="family-invite-btn" bindtap="openInviteSheet">+ 邀请家人</button>
+      <view class="family-invite-hint">通过微信分享邀请家人一起记录宝宝成长</view>
+    </view>
+  </view>
+
+  <!-- 修改身份弹窗 -->
+  <view wx:if="{{showRoleSheet}}" class="family-mask" bindtap="closeRoleSheet" catchtouchmove="stopTouchMove">
+    <view class="family-sheet" catchtap="stopTap">
+      <view class="family-sheet-hd">
+        <view class="family-sheet-title">修改我的身份</view>
+        <view class="family-sheet-close" bindtap="closeRoleSheet">✕</view>
+      </view>
+      <view class="family-sheet-desc">选择你和当前宝宝的新关系</view>
+
+      <picker mode="selector" range="{{FAMILY_ROLES}}" range-key="name" value="{{selectedRoleIndex}}" bindchange="onRolePickerChange">
+        <view class="family-picker">
+          <view class="family-picker-label">身份</view>
+          <view class="family-picker-value">{{FAMILY_ROLES[selectedRoleIndex].name}} ›</view>
+        </view>
+      </picker>
+
+      <button class="family-sheet-btn" loading="{{roleSaving}}" bindtap="onConfirmRole">确认修改</button>
+    </view>
+  </view>
+
+  <!-- 邀请家人弹窗 -->
+  <view wx:if="{{showInviteSheet}}" class="family-mask" bindtap="closeInviteSheet" catchtouchmove="stopTouchMove">
+    <view class="family-sheet" catchtap="stopTap">
+      <view class="family-sheet-hd">
+        <view class="family-sheet-title">邀请家人</view>
+        <view class="family-sheet-close" bindtap="closeInviteSheet">✕</view>
+      </view>
+      <view class="family-sheet-desc">选择被邀请人的身份，通过微信分享邀请链接</view>
+
+      <picker mode="selector" range="{{FAMILY_ROLES}}" range-key="name" value="{{inviteRoleIndex}}" bindchange="onInviteRolePickerChange">
+        <view class="family-picker">
+          <view class="family-picker-label">被邀请人身份</view>
+          <view class="family-picker-value">{{FAMILY_ROLES[inviteRoleIndex].name}} ›</view>
+        </view>
+      </picker>
+
+      <button class="family-sheet-btn" open-type="share">确认邀请 · {{FAMILY_ROLES[inviteRoleIndex].name}}</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,45 @@
+<view class="gs-panel {{sleeping ? 'sleeping' : ''}}" wx:if="{{visible}}">
+  <view class="gs-top">
+    <view wx:if="{{sleeping}}" class="gs-sleep-breath">
+      <view class="gs-breath-ring"></view>
+      <view class="gs-breath-ring delay"></view>
+      <text class="gs-emoji sleep">😴</text>
+    </view>
+    <text wx:else class="gs-emoji">🌟</text>
+    <view class="gs-text">
+      <view class="gs-title">{{sleeping ? babyName + '正在睡觉' : babyName + '状态良好'}}</view>
+      <view class="gs-sub {{sleeping ? 'sleeping' : ''}}">{{sleeping ? (sleepStatusText || '安静睡眠中') : (growthStage.subtitle || '正在美美成长中~')}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!sleeping && growthStage.physicalChanges}}" class="gs-expand">
+    <view class="gs-expand-trigger" bindtap="onToggleDetail">
+      <text class="gs-expand-text">{{expanded ? '收起宝宝的变化' : '宝宝的变化'}}</text>
+      <text class="gs-expand-arrow {{expanded ? 'up' : ''}}">›</text>
+    </view>
+
+    <view wx:if="{{expanded}}" class="gs-detail">
+      <view class="gs-detail-divider"></view>
+      <view class="gs-detail-content">{{growthStage.physicalChanges}}</view>
+    </view>
+  </view>
+
+  <view class="gs-tip {{sleeping ? 'sleeping' : ''}}">
+    <text class="gs-tip-icon">{{sleeping ? '🌙' : '💡'}}</text>
+    <view wx:if="{{sleeping}}" class="gs-sleep-tip-text">宝宝正在睡眠中，保持柔和光线和稳定环境。</view>
+    <view wx:else class="gs-tip-swiper-wrap">
+      <swiper
+        class="gs-tip-swiper"
+        vertical="{{true}}"
+        autoplay="{{true}}"
+        interval="{{5000}}"
+        circular="{{true}}"
+        duration="{{600}}"
+      >
+        <swiper-item wx:for="{{dailyTips}}" wx:key="*this">
+          <text class="gs-tip-text">{{item}}</text>
+        </swiper-item>
+      </swiper>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,173 @@
+<!-- components/diaper-form/index.wxml -->
+<view class="diaper-form">
+  <!-- 尿布类型 -->
+  <view class="type-grid">
+    <view
+      class="type-card {{diaperType === 'wet' ? 'active' : ''}}"
+      bindtap="selectType"
+      data-type="wet"
+    >
+      <view class="type-icon">💧</view>
+      <view class="type-label">嘘嘘</view>
+    </view>
+    <view
+      class="type-card {{diaperType === 'dirty' ? 'active' : ''}}"
+      bindtap="selectType"
+      data-type="dirty"
+    >
+      <view class="type-icon">💩</view>
+      <view class="type-label">便便</view>
+    </view>
+    <view
+      class="type-card {{diaperType === 'both' ? 'active' : ''}}"
+      bindtap="selectType"
+      data-type="both"
+    >
+      <view class="type-icon">💧💩</view>
+      <view class="type-label">都有</view>
+    </view>
+    <view
+      class="type-card {{diaperType === 'dry' ? 'active' : ''}}"
+      bindtap="selectType"
+      data-type="dry"
+    >
+      <view class="type-icon">✅</view>
+      <view class="type-label">干爽</view>
+    </view>
+  </view>
+
+  <!-- 嘘嘘颜色（选填） -->
+  <block wx:if="{{diaperType === 'wet' || diaperType === 'both'}}">
+    <view class="section">
+      <view class="label">嘘嘘颜色</view>
+      <view class="color-options">
+        <view
+          wx:for="{{urineColors}}"
+          wx:key="value"
+          class="color-col {{selectedUrineColor === item.value ? 'active' : ''}}"
+          bindtap="selectUrineColor"
+          data-color="{{item.value}}"
+        >
+          <view class="color-dot" style="background: {{item.hex}}">
+            <text wx:if="{{selectedUrineColor === item.value}}" class="check">✓</text>
+          </view>
+          <text class="color-name">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="label">尿量</view>
+      <view class="chip-group">
+        <view
+          wx:for="{{urineAmounts}}"
+          wx:key="value"
+          class="chip {{selectedUrineAmount === item.value ? 'active' : ''}}"
+          bindtap="selectUrineAmount"
+          data-amount="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 便便详情（选填） -->
+  <block wx:if="{{diaperType === 'dirty' || diaperType === 'both'}}">
+    <view class="section">
+      <view class="label">便便颜色</view>
+      <view class="color-options">
+        <view
+          wx:for="{{colors}}"
+          wx:key="value"
+          class="color-col {{selectedColor === item.value ? 'active' : ''}}"
+          bindtap="selectColor"
+          data-color="{{item.value}}"
+        >
+          <view class="color-dot" style="background: {{item.hex}}">
+            <text wx:if="{{selectedColor === item.value}}" class="check">✓</text>
+          </view>
+          <text class="color-name">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="label">状态</view>
+      <view class="chip-group">
+        <view
+          wx:for="{{consistencies}}"
+          wx:key="value"
+          class="chip {{selectedConsistency === item.value ? 'active' : ''}}"
+          bindtap="selectConsistency"
+          data-consistency="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="label">便量</view>
+      <view class="chip-group">
+        <view
+          wx:for="{{stoolAmounts}}"
+          wx:key="value"
+          class="chip {{selectedStoolAmount === item.value ? 'active' : ''}}"
+          bindtap="selectStoolAmount"
+          data-amount="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <!-- 拉肚子标记（多选） -->
+    <view class="section section-danger">
+      <view class="label label-danger">🚨 拉肚子</view>
+      <view class="chip-group">
+        <view
+          wx:for="{{diarrheaOptions}}"
+          wx:key="value"
+          class="chip chip-danger {{item.selected ? 'active-danger' : ''}}"
+          bindtap="toggleDiarrhea"
+          data-value="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+      <view wx:if="{{selectedDiarrhea.length > 0}}" class="abnormal-tip">⚠ 标记为异常，将自动进入腹泻追踪</view>
+    </view>
+  </block>
+
+  <!-- 照片 -->
+  <view class="section">
+    <view class="label">📷 照片</view>
+    <view class="photo-grid">
+      <view wx:for="{{photos}}" wx:key="index" class="photo-item" bindtap="previewPhoto" data-url="{{item}}" data-index="{{index}}">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="photo-del" catchtap="removePhoto" data-index="{{index}}">✕</view>
+      </view>
+      <view class="photo-add" bindtap="addPhoto" wx:if="{{photos.length < 9}}">
+        <text class="add-icon">+</text>
+        <text class="add-tip">{{uploading ? '上传中' : '拍照'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间选择 -->
+  <view class="input-group">
+    <view class="label">记录时间</view>
+    <picker mode="multiSelector" value="{{timeIndex}}" range="{{timeRange}}" bindchange="onTimeChange">
+      <view class="picker-value">{{recordTime}}</view>
+    </picker>
+  </view>
+
+  <!-- 备注 -->
+  <view class="input-group">
+    <view class="label">备注</view>
+    <textarea
+      class="note-input"
+      placeholder="补充说明..."
+      value="{{note}}"
+      bindinput="onNoteInput"
+      adjust-position="{{false}}"
+      maxlength="200"
+      auto-height
+    />
+  </view>
+
+  <button class="save-btn" bindtap="onSave">保存记录</button>
+</view>

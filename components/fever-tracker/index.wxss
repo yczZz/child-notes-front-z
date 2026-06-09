@@ -1,0 +1,120 @@
+/* components/fever-tracker/index.wxss */
+
+.ft-panel {
+  margin: 16rpx 24rpx;
+  background: linear-gradient(135deg, #fff5f5, #fffafa);
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}
+
+/* 标题栏 */
+.ft-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 28rpx 0;
+}
+
+.ft-hd-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.ft-icon { font-size: 36rpx; }
+
+.ft-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fa5151;
+}
+
+.ft-temp {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #fa5151;
+}
+
+/* 信息双栏 */
+.ft-bd {
+  display: flex;
+  margin: 18rpx 28rpx;
+  padding: 22rpx 20rpx;
+  background: #fff;
+  border-radius: 12rpx;
+}
+
+.ft-item {
+  flex: 1;
+  text-align: center;
+}
+
+.ft-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 6rpx;
+}
+
+.ft-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.ft-value.warn { color: #fa5151; }
+
+.ft-split {
+  width: 2rpx;
+  background: #f0f0f0;
+}
+
+/* 过量警告 */
+.ft-overdose {
+  margin: 0 28rpx 14rpx;
+  padding: 14rpx 18rpx;
+  background: #fa5151;
+  color: #fff;
+  font-size: 24rpx;
+  text-align: center;
+  border-radius: 10rpx;
+  font-weight: 500;
+}
+
+/* 操作按钮 */
+.ft-actions {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 28rpx;
+}
+
+.ft-btn {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  color: #fa5151;
+  background: #fff;
+  border: 2rpx solid #fa5151;
+}
+
+.ft-btn-danger {
+  color: #fff;
+  background: #fa5151;
+}
+
+/* 已退烧 */
+.ft-recovered {
+  text-align: center;
+  padding: 16rpx 0 24rpx;
+}
+
+.ft-recovered-btn {
+  display: inline-block;
+  padding: 10rpx 40rpx;
+  border: 1rpx solid #07c160;
+  color: #07c160;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+}

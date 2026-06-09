@@ -1,0 +1,172 @@
+<!-- components/vaccine-form/index.wxml -->
+<view class="vaccine-form">
+  <view class="custom-vaccine-entry" bindtap="toggleCustomVaccineForm">
+    <view>
+      <view class="custom-vaccine-title">添加自定义疫苗</view>
+      <view class="custom-vaccine-desc">添加后会进入当前宝宝的疫苗时间线</view>
+    </view>
+    <view class="custom-vaccine-plus">{{showCustomVaccineForm ? '收起' : '+ 添加'}}</view>
+  </view>
+
+  <view wx:if="{{showCustomVaccineForm}}" class="custom-vaccine-form">
+    <view class="custom-vaccine-field">
+      <view class="custom-vaccine-label">疫苗名称</view>
+      <input
+        class="custom-vaccine-input"
+        placeholder="如：流感疫苗加强针"
+        value="{{customVaccineName}}"
+        bindinput="onCustomVaccineNameInput"
+      />
+    </view>
+
+    <view class="custom-vaccine-field">
+      <view class="custom-vaccine-label">类型</view>
+      <view class="custom-vaccine-segments">
+        <view
+          class="custom-vaccine-segment {{customVaccineCategory === 'free' ? 'active' : ''}}"
+          data-category="free"
+          bindtap="switchCustomVaccineCategory"
+        >免费疫苗</view>
+        <view
+          class="custom-vaccine-segment paid {{customVaccineCategory === 'paid' ? 'active' : ''}}"
+          data-category="paid"
+          bindtap="switchCustomVaccineCategory"
+        >自费疫苗</view>
+      </view>
+    </view>
+
+    <view class="custom-vaccine-field">
+      <view class="custom-vaccine-label">接种时间</view>
+      <view class="custom-vaccine-age-row">
+        <input
+          class="custom-vaccine-age-input"
+          type="number"
+          placeholder="数值"
+          value="{{customVaccineAgeValue}}"
+          bindinput="onCustomVaccineAgeInput"
+        />
+        <picker mode="selector" value="{{customVaccineAgeUnitIndex}}" range="{{customVaccineAgeUnits}}" bindchange="onCustomVaccineAgeUnitChange">
+          <view class="custom-vaccine-unit">{{customVaccineAgeUnits[customVaccineAgeUnitIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="custom-vaccine-field">
+      <view class="custom-vaccine-label">预防疾病</view>
+      <input
+        class="custom-vaccine-input"
+        placeholder="可不填"
+        value="{{customVaccineDisease}}"
+        bindinput="onCustomVaccineDiseaseInput"
+      />
+    </view>
+
+    <view class="custom-vaccine-actions">
+      <view class="custom-vaccine-cancel" bindtap="toggleCustomVaccineForm">取消</view>
+      <view class="custom-vaccine-save {{customVaccineSaving ? 'disabled' : ''}}" bindtap="addCustomVaccine">
+        {{customVaccineSaving ? '添加中...' : '加入时间线'}}
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{selectedPlan}}" class="selected-card">
+    <view>
+      <view class="selected-label">已选择</view>
+      <view class="selected-name">{{selectedPlan.name}}</view>
+      <view class="selected-meta">
+        {{selectedPlan.ageLabel}} · {{selectedPlan.recommendedDateText || '按门诊安排'}}
+      </view>
+    </view>
+    <view class="selected-status {{selectedPlan.statusClass}}">{{selectedPlan.statusText}}</view>
+  </view>
+
+  <view class="catalog-list vf-timeline">
+    <view class="vf-time-head">
+      <view class="vf-time-head-col">免费疫苗</view>
+      <view class="vf-time-head-axis">时间</view>
+      <view class="vf-time-head-col paid">自费疫苗</view>
+    </view>
+
+    <view
+      wx:for="{{timelineGroups}}"
+      wx:key="key"
+      class="vf-time-row"
+    >
+      <view class="vf-time-col left">
+        <view wx:if="{{item.hasFree}}" class="vf-time-list">
+          <view
+            wx:for="{{item.freeDoses}}"
+            wx:for-item="dose"
+            wx:key="key"
+            class="vf-time-dose {{dose.statusClass}} {{selectedKey === dose.key ? 'active' : ''}}"
+            bindtap="selectDose"
+            data-key="{{dose.key}}"
+          >
+            <view class="vf-time-dose-name">{{dose.name}}</view>
+            <view class="vf-time-dose-meta">{{dose.doseLabel}} · {{dose.recommendedDateText || '按门诊安排'}}</view>
+            <view class="vf-time-dose-meta">预防：{{dose.disease}}</view>
+            <view class="vf-time-dose-footer">
+              <view class="vf-time-dose-status">{{dose.statusText}}</view>
+              <view wx:if="{{!dose.handled}}" class="vf-time-actions">
+                <picker
+                  class="vf-time-action-picker"
+                  mode="multiSelector"
+                  value="{{timeIndex}}"
+                  range="{{timeRange}}"
+                  bindchange="onMarkDoseTimeChange"
+                  data-key="{{dose.key}}"
+                >
+                  <view class="vf-time-mark">已打</view>
+                </picker>
+                <view class="vf-time-skip" catchtap="onSkipDose" data-key="{{dose.key}}">跳过</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="vf-time-empty">暂无</view>
+      </view>
+
+      <view class="vf-time-axis">
+        <view class="vf-time-line"></view>
+        <view class="vf-time-dot"></view>
+        <view class="vf-time-label">{{item.name}}</view>
+        <view wx:if="{{item.dateText}}" class="vf-time-date">{{item.dateText}}</view>
+        <view class="vf-time-count">{{item.handledCount}}/{{item.totalCount}}</view>
+      </view>
+
+      <view class="vf-time-col right">
+        <view wx:if="{{item.hasPaid}}" class="vf-time-list">
+          <view
+            wx:for="{{item.paidDoses}}"
+            wx:for-item="dose"
+            wx:key="key"
+            class="vf-time-dose {{dose.statusClass}} {{selectedKey === dose.key ? 'active' : ''}}"
+            bindtap="selectDose"
+            data-key="{{dose.key}}"
+          >
+            <view class="vf-time-dose-name">{{dose.name}}</view>
+            <view class="vf-time-dose-meta">{{dose.doseLabel}} · {{dose.recommendedDateText || '按门诊安排'}}</view>
+            <view class="vf-time-dose-meta">预防：{{dose.disease}}</view>
+            <view class="vf-time-dose-footer">
+              <view class="vf-time-dose-status">{{dose.statusText}}</view>
+              <view wx:if="{{!dose.handled}}" class="vf-time-actions">
+                <picker
+                  class="vf-time-action-picker"
+                  mode="multiSelector"
+                  value="{{timeIndex}}"
+                  range="{{timeRange}}"
+                  bindchange="onMarkDoseTimeChange"
+                  data-key="{{dose.key}}"
+                >
+                  <view class="vf-time-mark">已打</view>
+                </picker>
+                <view class="vf-time-skip" catchtap="onSkipDose" data-key="{{dose.key}}">跳过</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="vf-time-empty">暂无</view>
+      </view>
+    </view>
+  </view>
+</view>

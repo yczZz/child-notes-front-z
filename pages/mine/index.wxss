@@ -1,0 +1,912 @@
+/* pages/mine/index.wxss */
+
+.mine-page {
+  min-height: 100vh;
+  background: #ededed;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+/* 用户卡片 */
+.m-user {
+  display: flex;
+  align-items: center;
+  margin: 24rpx;
+  padding: 36rpx 32rpx;
+  background: linear-gradient(135deg, #e8f9ef, #ffffff);
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.03);
+}
+
+.m-avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.m-avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.m-avatar-text {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #07c160, #06ad56);
+  color: #fff;
+  font-size: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m-user-body {
+  flex: 1;
+}
+
+.m-user-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6rpx;
+}
+
+.m-user-tag {
+  display: inline-block;
+  font-size: 22rpx;
+  color: #07c160;
+  background: rgba(7,193,96,0.1);
+  padding: 4rpx 16rpx;
+  border-radius: 16rpx;
+}
+
+.m-user-arrow {
+  font-size: 40rpx;
+  color: #ccc;
+}
+
+/* 菜单面板 */
+.m-panel {
+  margin: 16rpx 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.m-cell {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 28rpx;
+  position: relative;
+}
+
+.m-cell + .m-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 70rpx;
+  right: 0;
+  height: 1rpx;
+  background: #f0f0f0;
+}
+
+.m-cell-hd {
+  font-size: 36rpx;
+  margin-right: 18rpx;
+  width: 48rpx;
+  text-align: center;
+}
+
+.m-cell-bd {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.m-cell-ft {
+  font-size: 26rpx;
+  color: #999;
+  margin-right: 8rpx;
+}
+
+.m-cell-arrow {
+  font-size: 34rpx;
+  color: #ccc;
+}
+
+.m-cell-btn-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 0;
+  opacity: 0.01;
+}
+
+.m-cell-btn-overlay::after {
+  border: none;
+}
+
+/* 退出登录 */
+.m-logout-area {
+  padding: 40rpx 60rpx 0;
+}
+
+.m-logout-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #fff;
+  color: #e74c3c;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ========== 弹窗通用 ========== */
+.m-mask {
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: flex-end;
+}
+
+.m-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 32rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.m-sheet-hd {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28rpx;
+}
+
+.m-sheet-title {
+  flex: 1;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #222;
+}
+
+.m-sheet-back {
+  width: 56rpx;
+  height: 56rpx;
+  margin-right: 10rpx;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.m-sheet-back::before {
+  content: '';
+  position: absolute;
+  left: 22rpx;
+  top: 17rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-left: 4rpx solid #333;
+  border-bottom: 4rpx solid #333;
+  transform: rotate(45deg);
+}
+
+.m-sheet-back:active {
+  background: #f4f4f4;
+}
+
+.m-sheet-close {
+  font-size: 40rpx;
+  color: #bbb;
+  padding: 8rpx;
+}
+
+/* 登录授权 */
+.m-login-sheet {
+  padding-top: 30rpx;
+}
+
+.m-login-hero {
+  text-align: center;
+  padding: 8rpx 20rpx 28rpx;
+}
+
+.m-login-mark {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 0 auto 22rpx;
+  border-radius: 50%;
+  background: #e8f9ef;
+  color: #07c160;
+  font-size: 58rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m-login-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12rpx;
+}
+
+.m-login-desc {
+  max-width: 560rpx;
+  margin: 0 auto;
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #666;
+}
+
+.m-privacy-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.m-privacy-checkbox {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 2rpx solid #ccc;
+  margin-right: 12rpx;
+  margin-top: 4rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  color: #fff;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.m-privacy-checkbox.checked {
+  background: #07c160;
+  border-color: #07c160;
+}
+
+.m-privacy-text {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.6;
+}
+
+.m-privacy-link {
+  color: #07c160;
+}
+
+.m-login-btn {
+  width: 100%;
+  height: 92rpx;
+  line-height: 92rpx;
+  margin-top: 28rpx;
+  border-radius: 18rpx;
+  background: #07c160;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 700;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.m-login-btn[disabled] {
+  background: #82d8ab;
+  color: rgba(255,255,255,0.9);
+}
+
+.m-login-cancel {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 18rpx;
+  background: transparent;
+  color: #777;
+  font-size: 28rpx;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.m-login-cancel[disabled] {
+  color: #bbb;
+}
+
+.m-login-btn::after,
+.m-login-cancel::after {
+  border: none;
+}
+
+/* 宝宝喂养分析 */
+.m-smart-mask {
+  animation: mSmartMaskIn 180ms ease-out both;
+}
+
+.m-smart-sheet {
+  height: 88vh;
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: mSmartSheetIn 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  will-change: transform, opacity;
+}
+
+@keyframes mSmartMaskIn {
+  from { background: rgba(0,0,0,0); }
+  to { background: rgba(0,0,0,0.4); }
+}
+
+@keyframes mSmartSheetIn {
+  from {
+    opacity: 0.94;
+    transform: translate3d(0, 36rpx, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.m-smart-list-wrap,
+.m-smart-detail {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-smart-summary {
+  padding: 24rpx;
+  border-radius: 16rpx;
+  background: #f7fbf8;
+  margin-bottom: 24rpx;
+}
+
+.m-smart-summary-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1f2d24;
+  margin-bottom: 8rpx;
+}
+
+.m-smart-summary-desc {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #66736b;
+}
+
+.m-smart-range {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-bottom: 12rpx;
+}
+
+.m-smart-range picker {
+  flex: 1;
+  min-width: 0;
+}
+
+.m-smart-date-picker {
+  min-height: 84rpx;
+  padding: 14rpx 18rpx;
+  border-radius: 14rpx;
+  border: 2rpx solid #edf1ee;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.m-smart-date-label {
+  font-size: 22rpx;
+  line-height: 1.2;
+  color: #89938d;
+  margin-bottom: 6rpx;
+}
+
+.m-smart-date-value {
+  font-size: 28rpx;
+  line-height: 1.35;
+  color: #1f2d24;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.m-smart-range-sep {
+  flex-shrink: 0;
+  font-size: 24rpx;
+  color: #89938d;
+}
+
+.m-smart-range-tip {
+  min-height: 34rpx;
+  margin-bottom: 18rpx;
+  font-size: 24rpx;
+  line-height: 1.45;
+  color: #66736b;
+}
+
+.m-smart-range-tip.warn {
+  color: #d46b08;
+}
+
+.m-smart-generate-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 16rpx;
+  background: #07c160;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.m-smart-generate-btn[disabled] {
+  background: #82d8ab;
+  color: rgba(255,255,255,0.9);
+}
+
+.m-smart-generate-btn::after,
+.m-smart-secondary-btn::after {
+  border: none;
+}
+
+.m-smart-empty {
+  padding: 48rpx 12rpx 20rpx;
+  color: #888;
+  font-size: 26rpx;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.m-smart-empty-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.m-smart-empty-desc {
+  color: #888;
+}
+
+.m-smart-list {
+  flex: 1;
+  min-height: 0;
+  margin-top: 24rpx;
+}
+
+.m-smart-list-scroll {
+  height: 100%;
+}
+
+.m-smart-record {
+  padding: 22rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #edf1ee;
+  background: #fafafa;
+  margin-bottom: 16rpx;
+}
+
+.m-smart-record:active {
+  background: #f2f4f5;
+}
+
+.m-smart-record-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.m-smart-record-title {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #222;
+}
+
+.m-smart-record-range {
+  font-size: 24rpx;
+  color: #07c160;
+  margin-bottom: 12rpx;
+}
+
+.m-smart-record-tip {
+  margin-bottom: 12rpx;
+  padding: 12rpx 14rpx;
+  border-radius: 12rpx;
+  background: #fff7e6;
+  color: #ad6800;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.m-smart-record-preview {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #666;
+}
+
+.m-smart-detail-meta {
+  padding: 20rpx 22rpx;
+  border-radius: 16rpx;
+  background: #f7fbf8;
+  color: #66736b;
+  font-size: 24rpx;
+  line-height: 1.7;
+  margin-bottom: 24rpx;
+}
+
+.m-smart-detail-tip {
+  margin-top: 8rpx;
+  padding-top: 8rpx;
+  border-top: 1rpx solid rgba(7,193,96,0.16);
+  color: #ad6800;
+}
+
+.m-smart-detail-scroll {
+  flex: 1;
+  min-height: 0;
+  height: 0;
+}
+
+.m-smart-markdown {
+  padding-bottom: 12rpx;
+}
+
+.m-smart-md-heading {
+  color: #1f2d24;
+  font-weight: 800;
+  margin: 28rpx 0 14rpx;
+}
+
+.m-smart-md-heading:first-child {
+  margin-top: 0;
+}
+
+.m-smart-md-heading.level-1 {
+  font-size: 34rpx;
+}
+
+.m-smart-md-heading.level-2 {
+  font-size: 32rpx;
+}
+
+.m-smart-md-heading.level-3 {
+  font-size: 30rpx;
+}
+
+.m-smart-md-paragraph {
+  font-size: 28rpx;
+  line-height: 1.75;
+  color: #333b36;
+  margin-bottom: 18rpx;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.m-smart-md-bullet {
+  display: flex;
+  align-items: flex-start;
+  padding: 18rpx 20rpx;
+  margin-bottom: 14rpx;
+  border-radius: 14rpx;
+  background: #f8faf8;
+}
+
+.m-smart-md-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #07c160;
+  margin: 16rpx 16rpx 0 0;
+  flex-shrink: 0;
+}
+
+.m-smart-md-bullet-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 28rpx;
+  line-height: 1.65;
+  color: #333b36;
+  word-break: break-word;
+}
+
+.m-smart-secondary-btn {
+  width: 100%;
+  height: 84rpx;
+  line-height: 84rpx;
+  border-radius: 16rpx;
+  background: #f2f4f5;
+  color: #333;
+  font-size: 28rpx;
+  margin-top: 32rpx;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 头像编辑 */
+.m-avatar-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 12rpx 0 30rpx;
+  margin: 0;
+  line-height: 1;
+  border: none;
+}
+.m-avatar-picker::after { border: none; }
+
+.m-edit-avatar {
+  width: 144rpx;
+  height: 144rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.m-edit-placeholder {
+  background: #07c160;
+  color: #fff;
+  font-size: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m-avatar-tip {
+  margin-top: 18rpx;
+  color: #07c160;
+  font-size: 26rpx;
+}
+
+/* 宝宝信息 */
+.m-baby-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.m-baby-row {
+  display: flex;
+  align-items: center;
+  min-height: 112rpx;
+  padding: 18rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #f0f0f0;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.m-baby-row:active {
+  background: #f2f4f5;
+}
+
+.m-baby-row-avatar {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 18rpx;
+  background: #e8f9ef;
+  color: #07c160;
+  font-size: 38rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.m-baby-row-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.m-baby-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.m-baby-row-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6rpx;
+}
+
+.m-baby-row-meta {
+  font-size: 24rpx;
+  color: #777;
+}
+
+.m-baby-current {
+  font-size: 22rpx;
+  color: #07c160;
+  background: rgba(7,193,96,0.1);
+  padding: 6rpx 14rpx;
+  border-radius: 18rpx;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.m-baby-empty {
+  padding: 36rpx 16rpx 18rpx;
+  text-align: center;
+}
+
+.m-baby-empty-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.m-baby-empty-desc {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.m-role-mask {
+  z-index: 10020;
+}
+
+.m-role-sheet {
+  max-height: 55vh;
+}
+
+.m-role-desc {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #666;
+  margin: -8rpx 0 24rpx;
+}
+
+.m-role-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 20rpx;
+  background: #f7fbf8;
+  border-radius: 12rpx;
+  margin-bottom: 28rpx;
+}
+
+.m-role-picker-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.m-role-picker-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.m-baby-avatar-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 0 30rpx;
+}
+
+.m-baby-edit-avatar {
+  width: 144rpx;
+  height: 144rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.m-baby-avatar-placeholder {
+  background: #e8f9ef;
+  color: #07c160;
+  font-size: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 表单行 */
+.m-form-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.m-form-label {
+  width: 120rpx;
+  color: #333;
+  font-size: 30rpx;
+}
+
+.m-form-input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #222;
+}
+
+.m-form-picker {
+  flex: 1;
+  font-size: 30rpx;
+  color: #222;
+}
+
+.m-form-picker.placeholder {
+  color: #ccc;
+}
+
+/* 性别选择 */
+.m-gender-row {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0 28rpx;
+}
+
+.m-gender-label {
+  width: 120rpx;
+  color: #333;
+  font-size: 30rpx;
+}
+
+.m-gender-opts {
+  display: flex;
+  gap: 20rpx;
+}
+
+.m-gender-btn {
+  padding: 18rpx 36rpx;
+  border-radius: 40rpx;
+  background: #f5f5f5;
+  font-size: 28rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+}
+
+.m-gender-btn.active {
+  background: #e8f9ef;
+  color: #07c160;
+  border-color: #07c160;
+  font-weight: 600;
+}
+
+/* 保存按钮 */
+.m-save-btn {
+  margin-top: 36rpx;
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 16rpx;
+  background: #07c160;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}

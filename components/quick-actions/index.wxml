@@ -1,0 +1,55 @@
+<!-- components/quick-actions/index.wxml -->
+
+<!-- 遮罩层 -->
+<view class="actions-mask {{expanded ? 'show' : ''}}" bindtap="onCollapse" catchtouchmove="{{true}}"></view>
+
+<!-- 底部面板 -->
+<view class="actions-panel {{expanded ? 'expanded' : ''}}">
+  <!-- 凸型拉手 -->
+  <view class="panel-pull" bindtap="onToggle">
+    <view class="pull-tab">
+      <text class="pull-text">快捷记录</text>
+      <text class="pull-arrow">{{expanded ? '▼' : '▲'}}</text>
+    </view>
+  </view>
+
+  <!-- 按钮网格 -->
+  <view class="actions-grid">
+    <view class="action-item" bindtap="onTap" data-type="feed">
+      <view class="action-icon feed-icon">🍼</view>
+      <view class="action-name">喂奶</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="diaper">
+      <view class="action-icon diaper-icon">💩</view>
+      <view class="action-name">换尿布</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="sleep">
+      <view class="action-icon sleep-icon {{sleepActive ? 'pulse' : ''}}">🌙</view>
+      <view class="action-name">睡眠</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="temperature">
+      <view class="action-icon temperature-icon">🌡️</view>
+      <view class="action-name">体温</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="supplement">
+      <view class="action-icon supplement-icon">💊</view>
+      <view class="action-name">补给用药</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="pump">
+      <view class="action-icon pump-icon">🍶</view>
+      <view class="action-name">吸奶</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="complementary">
+      <view class="action-icon comp-icon">🥣</view>
+      <view class="action-name">辅食</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="maternal_food">
+      <view class="action-icon maternal-food-icon">🍽️</view>
+      <view class="action-name">妈妈饮食</view>
+    </view>
+    <view class="action-item" bindtap="onTap" data-type="growth">
+      <view class="action-icon growth-icon">📏</view>
+      <view class="action-name">成长</view>
+    </view>
+  </view>
+</view>

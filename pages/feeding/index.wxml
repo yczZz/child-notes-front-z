@@ -1,0 +1,91 @@
+<!-- pages/feeding/index.wxml -->
+<view class="feeding-page" bindtap="onPageTap">
+
+  <!-- 日期选择器 -->
+  <view class="date-bar">
+    <view class="date-nav" bindtap="onPrevDay">‹</view>
+    <picker mode="date" value="{{pickerValue}}" end="{{todayStr}}" bindchange="onDateChange">
+      <view class="date-display">
+        <view class="date-row">
+          <text class="date-text">{{displayDate}}</text>
+          <text class="date-text-weekday">{{displayWeekday}}</text>
+          <text class="calendar-icon">📅</text>
+        </view>
+      </view>
+    </picker>
+    <view class="date-nav" bindtap="onNextDay">›</view>
+  </view>
+
+  <view wx:if="{{!isToday}}" class="today-btn" bindtap="onGoToday">回到今天</view>
+
+  <!-- 记录摘要 -->
+  <view class="day-summary" wx:if="{{records.length > 0}}">
+    <view class="summary-item" wx:if="{{dayStats.feedCount}}"><text>🍼 喂奶{{dayStats.feedCount}}次 · 奶量{{dayStats.totalMilk}}ml</text></view>
+    <view class="summary-item" wx:if="{{dayStats.breastCount}}"><text>🤱 亲喂{{dayStats.breastCount}}次 · {{dayStats.breastDuration}}</text></view>
+    <view class="summary-item" wx:if="{{dayStats.diaperCount}}"><text>💩 {{dayStats.diaperCount}}次尿布 · 便{{dayStats.dirtyDiaperCount || 0}} · 尿{{dayStats.wetDiaperCount || 0}}</text></view>
+    <view class="summary-item" wx:if="{{dayStats.supplementCount}}"><text>💊 {{dayStats.supplementSummary}}</text></view>
+    <view class="summary-item" wx:if="{{dayStats.maternalFoodCount}}"><text>🍽️ 妈妈饮食{{dayStats.maternalFoodCount}}次</text></view>
+    <view class="summary-item" wx:if="{{dayStats.sleepTotal}}"><text>😴 睡眠{{dayStats.sleepTotal}}</text></view>
+  </view>
+
+  <!-- 记录卡片列表 -->
+  <view class="records-list">
+    <block wx:for="{{records}}" wx:key="key">
+      <view class="swipe-row"
+        data-key="{{item.key}}"
+        bindtouchstart="onRecordTouchStart"
+        bindtouchmove="onRecordTouchMove"
+        bindtouchend="onRecordTouchEnd"
+        bindtouchcancel="onRecordTouchCancel">
+        <view class="delete-action {{item.swipeOpen ? 'active' : ''}}"
+          data-record-id="{{item._recordId}}"
+          catchtap="onDeleteRecord">删除</view>
+        <view class="record-card {{item.cssClass}} {{item.swiping ? 'swiping' : ''}} {{item.swipeOpen ? 'open' : ''}}"
+          style="transform: translate3d({{item.swipeOffset || 0}}px, 0, 0);"
+          data-key="{{item.key}}"
+          data-record-type="{{item._recordType}}"
+          data-record-id="{{item._recordId}}"
+          bindtap="onCardTap">
+
+          <view class="card-left"><view class="card-time">{{item.timeStr}}</view></view>
+          <view class="card-icon">{{item.icon}}</view>
+          <view class="card-body">
+            <view class="card-title">{{item.title}}</view>
+            <view wx:if="{{item.desc}}" class="card-desc">{{item.desc}}</view>
+            <view wx:if="{{item.note}}" class="card-note">{{item.note}}</view>
+            <view wx:if="{{item.photos && item.photos.length}}" class="card-photos">
+              <image wx:for="{{item.photos}}" wx:key="index" wx:for-item="photo" src="{{photo}}" mode="aspectFill" class="card-photo" data-url="{{photo}}" catchtap="onPreviewPhoto" />
+            </view>
+          </view>
+          <view wx:if="{{item.extra}}" class="card-extra {{item.isSleeping ? 'sleeping-extra' : ''}} {{item.isFeedingOngoing ? 'feeding-extra' : ''}} {{item.isResolved ? 'recovered-extra' : ''}}">{{item.extra}}</view>
+
+          <view wx:if="{{item.isSleeping}}" class="wake-btn" data-id="{{item.sleepId}}" catchtap="onWakeUp">睡醒了</view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{records.length === 0}}" class="empty-state">
+      <view class="empty-icon">📋</view>
+      <view class="empty-text">这天还没有记录</view>
+      <view class="empty-hint">去首页添加记录吧</view>
+    </view>
+  </view>
+
+  <!-- 图片预览 -->
+  <img-preview visible="{{previewVisible}}" src="{{previewSrc}}" bind:close="onClosePreview" />
+
+  <!-- 编辑抽屉 -->
+  <record-drawer visible="{{showDrawer}}" title="{{drawerTitle}}" bind:close="onDrawerClose">
+    <feed-form wx:if="{{showDrawer && drawerType === 'feed'}}" editData="{{editingRecord}}" feedOngoing="{{editingRecord}}" bind:save="onEditSave" bind:close="onDrawerClose" />
+    <diaper-form wx:if="{{showDrawer && drawerType === 'diaper'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:photochoose="onDrawerPhotoChoose" bind:photochooseend="onDrawerPhotoChooseEnd" bind:close="onDrawerClose" />
+    <sleep-form wx:if="{{showDrawer && drawerType === 'sleep'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:close="onDrawerClose" />
+    <temperature-form wx:if="{{showDrawer && drawerType === 'temperature'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:close="onDrawerClose" />
+    <supplement-form wx:if="{{showDrawer && drawerType === 'supplement'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:close="onDrawerClose" />
+    <growth-form wx:if="{{showDrawer && drawerType === 'growth'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:close="onDrawerClose" />
+    <complementary-form wx:if="{{showDrawer && drawerType === 'complementary'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:photochoose="onDrawerPhotoChoose" bind:photochooseend="onDrawerPhotoChooseEnd" bind:close="onDrawerClose" />
+    <maternal-food-form wx:if="{{showDrawer && drawerType === 'maternal_food'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:photochoose="onDrawerPhotoChoose" bind:photochooseend="onDrawerPhotoChooseEnd" bind:close="onDrawerClose" />
+    <pump-form wx:if="{{showDrawer && drawerType === 'pump'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:close="onDrawerClose" />
+    <abnormal-form wx:if="{{showDrawer && drawerType === 'abnormal'}}" editData="{{editingRecord}}" bind:save="onEditSave" bind:photochoose="onDrawerPhotoChoose" bind:photochooseend="onDrawerPhotoChooseEnd" bind:close="onDrawerClose" />
+  </record-drawer>
+
+</view>

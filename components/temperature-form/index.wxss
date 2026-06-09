@@ -1,0 +1,142 @@
+/* components/temperature-form/index.wxss */
+
+.temp-form {
+  padding-bottom: 40rpx;
+}
+
+/* 体温输入区 */
+.temp-input-section {
+  display: flex;
+  align-items: flex-end;
+  gap: 24rpx;
+  margin-bottom: 30rpx;
+}
+
+.temp-input-wrap {
+  flex: 1;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.temp-input {
+  flex: 1;
+  height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.unit {
+  font-size: 32rpx;
+  color: #666;
+  font-weight: 600;
+}
+
+/* 异常标记开关 */
+.abnormal-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 140rpx;
+  min-height: 110rpx;
+  padding: 16rpx 12rpx;
+  border-radius: 16rpx;
+  background: #f5f5f5;
+  border: 2rpx solid #e0e0e0;
+  transition: all 0.25s;
+}
+
+.abnormal-toggle.active {
+  background: #fff0f0;
+  border-color: #e74c3c;
+}
+
+.toggle-dot {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #ddd;
+  margin-bottom: 8rpx;
+  transition: all 0.25s;
+}
+
+.abnormal-toggle.active .toggle-dot {
+  background: #e74c3c;
+  box-shadow: 0 0 12rpx rgba(231, 76, 60, 0.4);
+}
+
+.toggle-label {
+  font-size: 20rpx;
+  color: #999;
+  text-align: center;
+  transition: color 0.25s;
+}
+
+.abnormal-toggle.active .toggle-label {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* 发热警告 */
+.fever-warning {
+  margin-bottom: 24rpx;
+  padding: 14rpx 18rpx;
+  background: #fff0f0;
+  color: #e74c3c;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  border-left: 4rpx solid #e74c3c;
+}
+
+/* 备注 */
+.input-group {
+  margin-bottom: 30rpx;
+}
+
+.note-input {
+  width: 100%;
+  min-height: 120rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 18rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+/* 时间 */
+.picker-value {
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.save-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #07c160;
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  margin-top: 20rpx;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}

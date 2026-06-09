@@ -1,0 +1,117 @@
+<view class="points-page">
+  <view class="zone sign-zone">
+    <view class="asset-card">
+      <view class="asset-label">您的积分</view>
+      <view class="asset-value">{{points}}<text>分</text></view>
+      <view class="asset-sub">累计获得 {{totalEarned}} 分 · 已使用 {{totalSpent}} 分</view>
+    </view>
+
+    <view class="timeline">
+      <block wx:for="{{signIn.timeline}}" wx:key="date">
+        <view class="timeline-item {{item.today ? 'today' : ''}} {{item.signed ? 'signed' : ''}}">
+          <view class="timeline-date">{{item.label}}</view>
+          <view class="timeline-dot">{{item.displayReward}}</view>
+        </view>
+      </block>
+    </view>
+
+    <button
+      class="primary-btn sign-btn"
+      loading="{{signing}}"
+      disabled="{{signing || signIn.todaySigned}}"
+      bindtap="onSignIn"
+    >{{signIn.todaySigned ? '今日已签到' : '立即签到'}}</button>
+    <view class="hint">您已连续签到 {{signIn.continuousDays || 0}} 天</view>
+  </view>
+
+  <view class="zone lottery-zone" wx:if="{{lottery}}">
+    <view class="zone-head">
+      <view class="draw-time">开奖时间：{{lottery.drawTime}}</view>
+      <view class="history-link" bindtap="onHistoryTap">历史抽奖</view>
+    </view>
+
+    <view class="prize">
+      <image class="prize-image" src="{{lottery.prizeImage}}" mode="aspectFill" />
+      <view class="prize-body">
+        <view class="prize-name">{{lottery.prizeName}}</view>
+        <view class="prize-intro">{{lottery.prizeIntro}}</view>
+        <view class="prize-meta">参与人数：{{lottery.participantCount}}人 | 可中奖人数：{{lottery.winnerCount}}人</view>
+      </view>
+    </view>
+
+    <view class="avatar-row">
+      <block wx:for="{{lottery.participantAvatars}}" wx:key="*this">
+        <image class="join-avatar" src="{{item}}" mode="aspectFill" />
+      </block>
+      <view wx:if="{{!lottery.participantAvatars.length}}" class="avatar-empty">等待第一位参与者</view>
+    </view>
+
+    <button
+      class="primary-btn lottery-btn"
+      loading="{{joining}}"
+      disabled="{{joining || lottery.alreadyJoined}}"
+      bindtap="onJoinLottery"
+    >{{lottery.joinText}}</button>
+  </view>
+
+  <view class="zone task-zone">
+    <view class="zone-head">
+      <view class="zone-title">任务中心</view>
+      <view class="history-link" bindtap="openInviteRecords">邀请记录</view>
+    </view>
+
+    <block wx:for="{{tasks}}" wx:key="taskKey">
+      <view class="task-item">
+        <view class="task-left">
+          <view class="task-points">+{{item.points}}</view>
+          <view class="task-body">
+            <view class="task-title">{{item.title}}</view>
+            <view class="task-desc">赚取{{item.points}}积分</view>
+          </view>
+        </view>
+        <button class="task-action" style="width: 100px;" open-type="share">完成任务</button>
+      </view>
+    </block>
+  </view>
+
+  <view wx:if="{{showInviteRecords}}" class="sheet-mask" bindtap="closeInviteRecords" catchtouchmove="stopTouchMove">
+    <view class="sheet" catchtap="stopTap">
+      <view class="sheet-head">
+        <view class="sheet-title">邀请记录</view>
+        <view class="sheet-close" bindtap="closeInviteRecords">×</view>
+      </view>
+      <view wx:if="{{!inviteRecords.length}}" class="empty">暂无邀请记录</view>
+      <block wx:for="{{inviteRecords}}" wx:key="id">
+        <view class="record-row">
+          <image wx:if="{{item.invitedAvatarUrl}}" class="record-avatar" src="{{item.invitedAvatarUrl}}" mode="aspectFill" />
+          <view wx:else class="record-avatar placeholder">邀</view>
+          <view class="record-body">
+            <view class="record-title">{{item.invitedNickName || '新用户'}}</view>
+            <view class="record-time">{{item.createdAt}}</view>
+          </view>
+          <view class="record-points">+{{item.points}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view wx:if="{{showLotteryHistory}}" class="sheet-mask" bindtap="closeLotteryHistory" catchtouchmove="stopTouchMove">
+    <view class="sheet" catchtap="stopTap">
+      <view class="sheet-head">
+        <view class="sheet-title">历史抽奖</view>
+        <view class="sheet-close" bindtap="closeLotteryHistory">×</view>
+      </view>
+      <view wx:if="{{!lotteryHistory.length}}" class="empty">暂无抽奖记录</view>
+      <block wx:for="{{lotteryHistory}}" wx:key="activityId">
+        <view class="record-row">
+          <view class="history-badge">{{item.costPoints}}</view>
+          <view class="record-body">
+            <view class="record-title">{{item.title}}</view>
+            <view class="record-time">{{item.joinedAt}} 参与 · {{item.drawTime}} 开奖</view>
+          </view>
+          <view class="history-status">{{item.statusText}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

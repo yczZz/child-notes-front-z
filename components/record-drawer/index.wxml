@@ -1,0 +1,12 @@
+<!-- components/record-drawer/index.wxml -->
+<view class="drawer-mask {{visible ? 'show' : ''}}" bindtap="onClose" catchtouchmove="stopTouchMove"></view>
+<view class="drawer-panel {{visible ? 'show' : ''}}" catchtouchmove="stopTouchMove">
+  <view class="drawer-header">
+    <view class="drawer-handle"></view>
+    <text class="drawer-title">{{title}}</text>
+    <view class="drawer-close" bindtap="onClose">✕</view>
+  </view>
+  <scroll-view class="drawer-body" scroll-y enhanced show-scrollbar="{{false}}">
+    <slot></slot>
+  </scroll-view>
+</view>

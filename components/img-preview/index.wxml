@@ -1,0 +1,7 @@
+<!-- components/img-preview/index.wxml -->
+<view wx:if="{{visible}}" class="ip-mask" catchtap="onClose" catchtouchmove="onTouchMove">
+  <view class="ip-box" catchtap="onClose" catchtouchmove="onTouchMove">
+    <view class="ip-close" catchtap="onClose">✕</view>
+    <image class="ip-img" src="{{src}}" mode="widthFix" catchtap="onClose" catchtouchmove="onTouchMove" />
+  </view>
+</view>
