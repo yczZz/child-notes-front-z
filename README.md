@@ -1,4 +1,4 @@
-# Child Notes Front
+# 幼儿简记微信小程序 Child Notes Front
 
 宝宝成长记录微信小程序前端，配套 `child-notes-backend` 使用。小程序提供宝宝档案、喂养记录、成长记录、统计、家庭成员、积分任务和 AI 分析等页面。
 
